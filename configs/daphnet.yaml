@@ -1,0 +1,70 @@
+﻿# Daphnet Dataset Configuration (CI-BabyMamba-HAR Signal Rescue)
+# Parkinson's Freezing of Gait (FoG) detection
+# Binary: Walk/Stand (0) vs Freeze (1)
+#
+# Signal Rescue Strategy:
+# - 12Hz Butterworth low-pass filter (preserve tremor frequencies)
+# - Class-Weighted Loss [1.0, 15.0] (heavy freeze emphasis)
+# - Weight Decay 0.05 (regularize on tiny dataset)
+# - Gated Temporal Attention (spotlight transient freeze events)
+
+dataset:
+  name: daphnet
+  path: ./datasets/Daphnet
+  numClasses: 2  # Binary classification
+  inChannels: 9  # 3 sensors × 3 axes
+  seqLen: 64     # 2 seconds at 32Hz (downsampled from 64Hz)
+  samplingRate: 32  # Hz (after downsampling)
+  originalRate: 64  # Original 64Hz, downsampled to 32Hz
+
+  # Signal Rescue: Preserve tremor frequencies while filtering noise
+  preprocessing:
+    butterworthCutoff: 12  # 12Hz preserves freeze tremor signatures
+    butterworthOrder: 4
+    normalize: true
+    standardize: true
+
+  # Class names
+  classes:
+    - Walk_Stand  # 0: Normal walking or standing
+    - Freeze      # 1: Freezing of gait episode
+
+# Class imbalance strategy (Signal Rescue: Heavy class weighting)
+# Freeze events are rare (minority class ~10-20%)
+classWeighting:
+  useBalancedSampler: true  # WeightedRandomSampler for 50/50 batches
+  classWeights: [1.0, 15.0] # Signal Rescue: 15x emphasis on Freeze
+  labelSmoothing: 0.0       # Sharp binary decisions (no smoothing)
+
+# Windowing strategy
+windowing:
+  windowSize: 64    # 2 seconds at 32Hz
+  stride: 8         # 87.5% overlap for training (capture transitions)
+  testStride: 32    # 50% overlap for testing
+
+# Training defaults (Signal Rescue: Strong regularization)
+training:
+  batchSize: 64
+  lr: 0.001
+  weightDecay: 0.05   # Signal Rescue: Strong regularization (small dataset)
+  dropout: 0.1
+  epochs: 200
+  patience: 20
+
+# Model config (CI-BabyMamba-HAR with Gated Attention)
+model:
+  dModel: 24        # FROZEN: CI-BabyMamba-HAR spec
+  nLayers: 4        # FROZEN: 4 layers
+  dState: 16        # FROZEN: Expanded state memory
+  expand: 2         # FROZEN: Expansion factor
+  useGatedAttention: true  # Signal Rescue: Spotlight freeze events
+  stemType: ci      # Channel-Independent Stem
+
+# Clinical context
+# - Freeze events are dangerous (fall risk)
+# - High sensitivity is critical (catch all freezes)
+# - Specificity matters less (false positives OK)
+# - Gated Temporal Attention prevents averaging away short freeze events
+evaluation:
+  priorityMetric: recall  # Sensitivity for freeze class
+  thresholdOptimization: freeze_sensitivity

@@ -1,0 +1,39 @@
+﻿# WISDM Dataset Configuration
+# Large-scale Android accelerometer data - ~1M samples
+
+data:
+  dataset: wisdm
+  root: ./datasets/WISDM_ar_v1.1
+  batchSize: 64
+  numWorkers: 2
+  augment: true
+  windowSize: 128
+  stride: 64
+
+model:
+  numClasses: 6
+  inChannels: 3  # acc_xyz only
+  seqLen: 128
+  variant: nano
+  # ========== GOLDEN CONFIG (LOCKED) ==========
+  # These architectural parameters are FIXED across all datasets
+  # to demonstrate robustness. Only training params are tuned via HPO.
+  dModel: 24        # LOCKED - Model dimension
+  nLayers: 2        # LOCKED - Number of distinct SSM blocks
+  dState: 16        # LOCKED - SSM state dimension
+  expand: 2         # LOCKED - Expansion factor
+  # =============================================
+  stemType: spectral
+
+training:
+  epochs: 50  # Fewer epochs needed due to larger dataset
+  lr: 0.001
+  weightDecay: 0.01
+  optimizer: adamw
+  scheduler: cosine
+  warmupEpochs: 3
+  mixedPrecision: true
+
+logging:
+  saveEvery: 5
+  logEvery: 1

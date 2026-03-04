@@ -1,0 +1,25 @@
+# Results (generated during training/HPO/ablation runs)
+results/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.egg
+dist/
+build/
+
+# Environment
+.env
+.venv/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Datasets (too large for git)
+datasets/

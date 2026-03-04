@@ -1,0 +1,46 @@
+﻿# Ablation Study Configurations
+
+# Base BabyMamba (for reference)
+base:
+  numClasses: 6
+  inChannels: 9
+  seqLen: 128
+  dModel: 24
+  nLayers: 3
+  dState: 8
+  expand: 2
+  stemType: hollow
+
+# Ablation variants
+ablations:
+  - name: "BabyMamba (Full)"
+    model: BabyMamba
+    expectedParams: "~14.5k"
+    expectedAcc: "95.9%"
+    
+  - name: "w/o SE Block"
+    model: noSe
+    expectedParams: "~14.2k"
+    expectedAcc: "93.4%"
+    conclusion: "SE critical for small d_model"
+    
+  - name: "w/o Residual"
+    model: noResidual
+    expectedParams: "~14.5k"
+    expectedAcc: "91.0%"
+    conclusion: "Gradient flow matters"
+    
+  - name: "w/o Mamba (CNN)"
+    model: cnnOnly
+    expectedParams: "~12.0k"
+    expectedAcc: "89.5%"
+    conclusion: "SSM captures temporal patterns better"
+
+training:
+  epochs: 100
+  lr: 0.001
+  weightDecay: 0.01
+  optimizer: adamw
+  scheduler: cosine
+  warmupEpochs: 5
+  seeds: [42, 123, 456]  # Multiple seeds for statistical significance

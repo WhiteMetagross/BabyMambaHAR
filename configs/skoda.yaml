@@ -1,0 +1,60 @@
+﻿# Skoda Dataset Configuration (CI-BabyMamba-HAR Signal Rescue)
+# Automotive assembly gesture recognition
+# 10 gestures + Null class (11 total)
+#
+# Signal Rescue Strategy:
+# - 5Hz Butterworth low-pass filter (aggressive denoising)
+# - Label smoothing 0.1 (smooth gesture transitions)
+# - Large batch size 512 (stabilize noisy gradients)
+# - CI-Stem isolates per-sensor noise
+
+dataset:
+  name: skoda
+  path: ./datasets/Skoda
+  numClasses: 11  # 10 gestures + Null
+  inChannels: 30  # 10 sensors × 3 axes
+  seqLen: 98      # ~3 seconds at 30Hz
+  samplingRate: 30  # Hz
+
+  # Signal Rescue: Aggressive filtering for noisy industrial environment
+  preprocessing:
+    butterworthCutoff: 5  # 5Hz low-pass filter
+    butterworthOrder: 4
+    normalize: true
+    standardize: true
+
+  # Class names
+  classes:
+    - Null               # 0: No gesture / transition
+    - write_on_notepad   # 1
+    - open_hood          # 2
+    - close_hood         # 3
+    - check_gaps         # 4
+    - open_left_door     # 5
+    - close_left_door    # 6
+    - open_right_door    # 7
+    - close_right_door   # 8
+    - check_trunk        # 9
+    - close_trunk        # 10
+
+# Class imbalance strategy
+# Null class is heavily over-represented
+classWeighting:
+  nullWeight: 0.5     # Down-weight Null class
+  gestureWeight: 1.5  # Up-weight actual gestures
+  labelSmoothing: 0.1 # Signal Rescue: Smooth gesture transitions
+
+# Windowing strategy (from literature)
+windowing:
+  windowSize: 98      # ~3 seconds
+  stride: 24          # 75% overlap for training
+  testStride: 98      # No overlap for testing
+
+# Training defaults (Signal Rescue: Large batch for stability)
+training:
+  batchSize: 512      # Signal Rescue: Large batch stabilizes gradients
+  lr: 0.001
+  weightDecay: 0.01
+  dropout: 0.1
+  epochs: 200
+  patience: 20

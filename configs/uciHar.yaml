@@ -1,0 +1,38 @@
+﻿# UCI-HAR Dataset Configuration
+# The "Hello World" of HAR - 6 activities, ~10k samples
+
+data:
+  dataset: ucihar
+  root: ./datasets/UCI HAR Dataset
+  batchSize: 64
+  numWorkers: 2
+  augment: true
+
+model:
+  numClasses: 6
+  inChannels: 9
+  seqLen: 128
+  variant: nano
+  # ========== GOLDEN CONFIG v2 (EMERGENCY RESCUE) ==========
+  # Keep d_model=24 but with STRONGER STEM (+1.8k params = ~15.7k total)
+  # The stem upgrade is in stems.py (double conv layer)
+  dModel: 24        # Keep 24 - stronger stem matches param budget
+  nLayers: 2        # LOCKED - Number of distinct SSM blocks
+  dState: 16        # LOCKED - SSM state dimension
+  expand: 2         # LOCKED - Expansion factor
+  dropout: 0.05     # LOWERED - Mamba underfits at 0.1
+  # =============================================
+  stemType: spectral
+
+training:
+  epochs: 100
+  lr: 0.005         # UPGRADED from 0.001 - SSMs need higher LR
+  weightDecay: 0.01
+  optimizer: adamw
+  scheduler: cosine
+  warmupEpochs: 5
+  mixedPrecision: true
+
+logging:
+  saveEvery: 10
+  logEvery: 1

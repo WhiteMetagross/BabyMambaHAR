@@ -1,0 +1,60 @@
+﻿# PAMAP2 Configuration (CI-BabyMamba-HAR Signal Rescue)
+# Complex/Multimodal - 18+ channels, 12 activities
+#
+# Signal Rescue Strategy:
+# - 10Hz Butterworth low-pass filter (moderate denoising)
+# - Robust/IQR Scaling (handles sensor outliers)
+# - Gradient clipping 1.0 (stabilize early training)
+# - CI-Stem isolates per-sensor dynamics
+
+data:
+  dataset: pamap2
+  root: ./datasets/PAMAP2_Dataset
+  batchSize: 64
+  numWorkers: 2
+  augment: true
+  windowSize: 128
+  stride: 64
+  channels: compact  # 19 channels (heart rate + 3 IMUs acc/gyro)
+
+  # Signal Rescue: Robust preprocessing for multi-sensor fusion
+  preprocessing:
+    butterworthCutoff: 10  # 10Hz low-pass filter
+    butterworthOrder: 4
+    useRobustScaling: true  # IQR-based scaling (handles outliers)
+    normalize: true
+
+model:
+  numClasses: 12
+  inChannels: 19
+  seqLen: 128
+  variant: micro  # CI-BabyMamba-HAR standard
+  dModel: 24      # FROZEN: CI-BabyMamba-HAR spec
+  nLayers: 4      # FROZEN: 4 layers
+  dState: 16      # FROZEN: Expanded state memory
+  expand: 2       # FROZEN: Expansion factor
+  stemType: ci    # Channel-Independent Stem
+
+training:
+  epochs: 200
+  lr: 0.001
+  weightDecay: 0.01
+  gradClip: 1.0          # Signal Rescue: Gradient clipping
+  optimizer: adamw
+  scheduler: cosine
+  warmupEpochs: 10
+  labelSmoothing: 0.1
+  mixedPrecision: true
+  patience: 30  # Increased from 15 for PAMAP2's complexity
+
+logging:
+  saveEvery: 10
+  logEvery: 1
+  outputDir: results/training
+
+# Notes:
+# PAMAP2 is the "heavy" dataset with:
+# - 12 activity classes
+# - 3 IMUs + heart rate = 19 compact channels (or 52 full)
+# - Proves CI-BabyMamba-HAR handles high-dimensional multimodal fusion
+# - CI-Stem dynamically isolates per-sensor dynamics
