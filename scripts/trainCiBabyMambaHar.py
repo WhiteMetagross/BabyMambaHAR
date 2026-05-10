@@ -1,4 +1,4 @@
-﻿"""
+"""
 CI-BabyMamba-HAR Training Script with Multiple Random Seeds
 
 FROZEN Architecture - CI-BabyMamba-HAR:
@@ -60,7 +60,7 @@ warnings.filterwarnings('ignore')
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from ciBabyMambaHar.models import ciBabyMambaHar, CI_BABYMAMBA_HAR_CONFIG
+from ciBabyMambaHar.models import CiBabyMambaHar, CI_BABYMAMBA_HAR_CONFIG
 from ciBabyMambaHar.utils.profiling import countParameters, computeMacs, benchmarkLatency
 from ciBabyMambaHar.data.pamap2 import computeClassWeights
 from ciBabyMambaHar.data.augmentations import getTrainAugmentation
@@ -190,12 +190,25 @@ class TrainingResult:
     totalEpochs: int
     trainTime: float
     earlyStopped: bool
+    checkpointPath: str = ""
+    modelStatePath: str = ""
+    runConfigPath: str = ""
+    resultPath: str = ""
     confusionMatrix: List[List[int]] = field(default_factory=list)
 
 
 def generateRandomSeeds(nSeeds: int, masterSeed: int = MASTER_SEED) -> List[int]:
     rng = np.random.default_rng(masterSeed)
     return list(rng.integers(0, 100000, size=nSeeds))
+
+
+def parseSeedList(raw: Optional[str]) -> Optional[List[int]]:
+    if raw is None:
+        return None
+    values = [part.strip() for part in str(raw).split(',') if part.strip()]
+    if not values:
+        return None
+    return [int(value) for value in values]
 
 
 def loadHpoResults(dataset: str) -> Optional[Dict[str, Any]]:
@@ -350,6 +363,26 @@ def computeConfusionMatrix(preds: torch.Tensor, labels: torch.Tensor, numClasses
     return matrix
 
 
+def convertJsonTypes(obj: Any) -> Any:
+    if isinstance(obj, np.floating):
+        return float(obj)
+    if isinstance(obj, np.integer):
+        return int(obj)
+    if isinstance(obj, Path):
+        return str(obj)
+    if isinstance(obj, dict):
+        return {k: convertJsonTypes(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [convertJsonTypes(v) for v in obj]
+    return obj
+
+
+def saveJson(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, 'w', encoding='utf-8') as handle:
+        json.dump(convertJsonTypes(payload), handle, indent=2)
+
+
 def trainModel(
     dataset: str,
     seed: int,
@@ -361,6 +394,7 @@ def trainModel(
     seqLenOverride: Optional[int] = None,
     accumulationSteps: int = 1,
     useTorchCompile: bool = False,
+    artifactDir: Optional[Path] = None,
 ) -> TrainingResult:
     """
     Train a single CiBabyMambaHar model.
@@ -766,6 +800,61 @@ def trainModel(
         earlyStopped=earlyStopped,
         confusionMatrix=confMatrix,
     )
+
+    if artifactDir is not None:
+        artifactDir.mkdir(parents=True, exist_ok=True)
+        checkpointPath = artifactDir / f"best_model_seed{seed}.pt"
+        modelStatePath = artifactDir / f"model_state_seed{seed}.pt"
+        runConfigPath = artifactDir / f"run_config_seed{seed}.json"
+        resultPath = artifactDir / f"train_result_seed{seed}.json"
+
+        checkpointPayload = {
+            'model_state_dict': bestModelState or model.state_dict(),
+            'dataset': dataset,
+            'seed': int(seed),
+            'model_name': 'CiBabyMambaHar',
+            'run_tag': runTag,
+            'epochs_requested': int(epochs),
+            'epochs_trained': int(epoch),
+            'patience': int(patience),
+            'seq_len': int(effectiveSeqLen),
+            'dataset_spec': spec,
+            'architecture_config': resolvedArch,
+            'hparams': hparams,
+            'best_metrics': {
+                'accuracy': float(bestAcc),
+                'f1': float(bestF1),
+                'precision': float(bestPrecision),
+                'recall': float(bestRecall),
+            },
+            'final_metrics': {
+                'accuracy': float(valAcc),
+            },
+        }
+        torch.save(checkpointPayload, checkpointPath)
+        torch.save(bestModelState or model.state_dict(), modelStatePath)
+
+        runConfig = {
+            'dataset': dataset,
+            'seed': int(seed),
+            'run_tag': runTag,
+            'epochs': int(epochs),
+            'warmup_epochs': int(warmupEpochs),
+            'patience': int(patience),
+            'seq_len': int(effectiveSeqLen),
+            'accumulation_steps': int(accumulationSteps),
+            'use_torch_compile': bool(useTorchCompile),
+            'architecture_config': resolvedArch,
+            'hparams': hparams,
+            'dataset_spec': spec,
+        }
+        saveJson(runConfigPath, runConfig)
+
+        result.checkpointPath = str(checkpointPath)
+        result.modelStatePath = str(modelStatePath)
+        result.runConfigPath = str(runConfigPath)
+        result.resultPath = str(resultPath)
+        saveJson(resultPath, asdict(result))
     
     del model
     torch.cuda.empty_cache()
@@ -783,22 +872,25 @@ def trainDatasetMultiSeed(
     seqLenOverride: Optional[int] = None,
     accumulationSteps: int = 1,
     useTorchCompile: bool = False,
+    seedList: Optional[List[int]] = None,
+    outputDir: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """Train on dataset with multiple seeds."""
-    seeds = generateRandomSeeds(nSeeds, MASTER_SEED)
+    seeds = [int(seed) for seed in seedList] if seedList else generateRandomSeeds(nSeeds, MASTER_SEED)
 
     resolvedArch = dict(LOCKED_ARCH)
     if archOverrides:
         for k, v in archOverrides.items():
             if v is not None:
                 resolvedArch[k] = v
-    
-        print(f"\nTraining CI-BabyMamba-HAR on {dataset.upper()} ({len(seeds)} seeds)")
-        print(f"   Run Tag: {runTag}")
-        print(f"   Architecture: CI-BabyMamba-HAR")
-        print(f"   d_model={resolvedArch['dModel']}, d_state={resolvedArch['dState']}, "
-            f"n_layers={resolvedArch['nLayers']}, expand={resolvedArch['expand']}, dt_rank={resolvedArch['dtRank']}")
-        print(f"   bidirectional={resolvedArch['bidirectional']}, CI-stem={resolvedArch['channelIndependent']}, gated_attention={resolvedArch['useGatedAttention']}")
+
+    print(f"\nTraining CI-BabyMamba-HAR on {dataset.upper()} ({len(seeds)} seeds)")
+    print(f"   Run Tag: {runTag}")
+    print(f"   Architecture: CI-BabyMamba-HAR")
+    print(f"   d_model={resolvedArch['dModel']}, d_state={resolvedArch['dState']}, "
+        f"n_layers={resolvedArch['nLayers']}, expand={resolvedArch['expand']}, dt_rank={resolvedArch['dtRank']}")
+    print(f"   bidirectional={resolvedArch['bidirectional']}, CI-stem={resolvedArch['channelIndependent']}, gated_attention={resolvedArch['useGatedAttention']}")
+    print(f"   Seeds: {seeds}")
     print(f"   Patience: {patience} epochs")
     
     results = []
@@ -817,6 +909,7 @@ def trainDatasetMultiSeed(
                 seqLenOverride=seqLenOverride,
                 accumulationSteps=accumulationSteps,
                 useTorchCompile=useTorchCompile,
+                artifactDir=outputDir,
             )
             results.append(result)
             
@@ -857,6 +950,9 @@ def trainDatasetMultiSeed(
     print(f"      F1 Score:   {summary['meanF1']:.2f}% ± {summary['stdF1']:.2f}%")
     print(f"      Parameters: {summary['parameters']:,}")
     print(f"      Latency:    {summary['latencyMs']:.2f} ms")
+
+    if outputDir is not None:
+        saveJson(outputDir / 'summary.json', summary)
     
     return summary
 
@@ -870,9 +966,11 @@ def trainAllDatasets(
     seqLenOverride: Optional[int] = None,
     accumulationSteps: int = 1,
     useTorchCompile: bool = False,
+    seedList: Optional[List[int]] = None,
+    outputRoot: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """Train on all datasets."""
-    seeds = generateRandomSeeds(nSeeds, MASTER_SEED)
+    seeds = [int(seed) for seed in seedList] if seedList else generateRandomSeeds(nSeeds, MASTER_SEED)
     
     resolvedArch = dict(LOCKED_ARCH)
     if archOverrides:
@@ -881,7 +979,7 @@ def trainAllDatasets(
                 resolvedArch[k] = v
 
     print("\n" + "=" * 70)
-    print("CI-BabyMamba-HAR TRAINING")
+    print("CI-BABYMAMBA-HAR TRAINING")
     print("=" * 70)
     print(f"   Run Tag: {runTag}")
     print(f"   Architecture: CI-BabyMamba-HAR")
@@ -896,11 +994,26 @@ def trainAllDatasets(
     allResults = {}
     
     for dataset in DATASET_SPECS.keys():
-        summary = trainDatasetMultiSeed(dataset, nSeeds, epochs, patience, archOverrides=archOverrides, runTag=runTag, seqLenOverride=seqLenOverride, accumulationSteps=accumulationSteps, useTorchCompile=useTorchCompile)
+        datasetOutputDir = None
+        if outputRoot is not None:
+            datasetOutputDir = outputRoot / dataset
+        summary = trainDatasetMultiSeed(
+            dataset,
+            nSeeds,
+            epochs,
+            patience,
+            archOverrides=archOverrides,
+            runTag=runTag,
+            seqLenOverride=seqLenOverride,
+            accumulationSteps=accumulationSteps,
+            useTorchCompile=useTorchCompile,
+            seedList=seedList,
+            outputDir=datasetOutputDir,
+        )
         allResults[dataset] = summary
     
     print(f"\n{'='*70}")
-    print("CI-BabyMamba-HAR RESULTS")
+    print("CI-BABYMAMBA-HAR RESULTS")
     print(f"{'='*70}")
     
     print(f"\n| Dataset | Params | MACs | Latency | Accuracy | F1 Score |")
@@ -919,21 +1032,9 @@ def trainAllDatasets(
     resultsDir.mkdir(parents=True, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    outPath = resultsDir / f"ciBabyMambaHar_training_{timestamp}.json"
+    outPath = resultsDir / f"ciBabyMambaHarTraining_{timestamp}.json"
     
-    def convertTypes(obj):
-        if isinstance(obj, np.floating):
-            return float(obj)
-        elif isinstance(obj, np.integer):
-            return int(obj)
-        elif isinstance(obj, dict):
-            return {k: convertTypes(v) for k, v in obj.items()}
-        elif isinstance(obj, list):
-            return [convertTypes(v) for v in obj]
-        return obj
-    
-    with open(outPath, 'w') as f:
-        json.dump(convertTypes(allResults), f, indent=2)
+    saveJson(outPath, allResults)
     
     print(f"\nResults saved: {outPath}")
     
@@ -955,12 +1056,14 @@ def main():
     parser.add_argument('--dataset', '-d', type=str, default='all',
                         choices=['ucihar', 'motionsense', 'wisdm', 'pamap2', 'opportunity', 'unimib', 'skoda', 'daphnet', 'all'])
     parser.add_argument('--seeds', '-s', type=int, default=N_SEEDS)
+    parser.add_argument('--seed-list', type=str, default=None,
+                        help='Comma-separated explicit seed list, e.g. 29 or 29,10734')
     parser.add_argument('--epochs', '-e', type=int, default=TRAINING_EPOCHS)
     parser.add_argument('--patience', '-p', type=int, default=EARLY_STOPPING_PATIENCE)
 
     # Ablation runner helpers
-    parser.add_argument('--outDir', type=str, default='results/ablations',
-                        help='Base output directory for ablation runs')
+    parser.add_argument('--outDir', type=str, default='results/training',
+                        help='Base output directory for training runs')
     parser.add_argument('--tag', type=str, default='baseline',
                         help='Run tag for naming/grouping outputs')
 
@@ -984,6 +1087,7 @@ def main():
                         help='Use torch.compile() for speedup (requires PyTorch 2.0+)')
     
     args = parser.parse_args()
+    explicitSeedList = parseSeedList(args.seed_list)
 
     archOverrides: Dict[str, Any] = {}
     if args.dModel is not None:
@@ -1017,15 +1121,18 @@ def main():
             seqLenOverride=args.seqLen,
             accumulationSteps=args.accumulation_steps,
             useTorchCompile=args.compile,
+            seedList=explicitSeedList,
+            outputRoot=Path(args.outDir) / 'ciBabyMambaHar' / args.tag / timestamp,
         )
 
-        resultsDir = Path(args.outDir) / 'CiBabyMambaHar' / args.tag / 'all' / timestamp
+        resultsDir = Path(args.outDir) / 'ciBabyMambaHar' / args.tag / 'all' / timestamp
         resultsDir.mkdir(parents=True, exist_ok=True)
         outPath = resultsDir / 'summary.json'
-        with open(outPath, 'w') as f:
-            json.dump(allResults, f, indent=2, default=float)
-        print(f"\nAblation results saved: {outPath}")
+        saveJson(outPath, allResults)
+        print(f"\nTraining results saved: {outPath}")
     else:
+        resultsDir = Path(args.outDir) / 'ciBabyMambaHar' / args.tag / args.dataset / timestamp
+        resultsDir.mkdir(parents=True, exist_ok=True)
         summary = trainDatasetMultiSeed(
             args.dataset,
             args.seeds,
@@ -1036,15 +1143,14 @@ def main():
             seqLenOverride=args.seqLen,
             accumulationSteps=args.accumulation_steps,
             useTorchCompile=args.compile,
+            seedList=explicitSeedList,
+            outputDir=resultsDir,
         )
-
-        resultsDir = Path(args.outDir) / 'CiBabyMambaHar' / args.tag / args.dataset / timestamp
-        resultsDir.mkdir(parents=True, exist_ok=True)
         outPath = resultsDir / 'summary.json'
-        with open(outPath, 'w') as f:
-            json.dump(summary, f, indent=2, default=float)
-        print(f"\nAblation results saved: {outPath}")
+        saveJson(outPath, summary)
+        print(f"\nTraining results saved: {outPath}")
 
 
 if __name__ == '__main__':
     main()
+

@@ -28,3 +28,6 @@ scikit-learn>=1.0.0
 
 # Einops for tensor operations
 einops>=0.6.0
+
+# Deployment and serial benchmarking
+pyserial>=3.5

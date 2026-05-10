@@ -1,0 +1,39 @@
+{
+  "variant": "crossover_bidir",
+  "dataset": "motionsense",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\motionSense\\20260108_181708\\best_model_seed45797.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\motionSense\\20260108_181708",
+  "seed": 45797,
+  "sample_index": 0,
+  "label": 0,
+  "pytorch_top1": 0,
+  "engine_top1": 0,
+  "parity_percent": 99.9999789956064,
+  "config": {
+    "variant": "crossover_bidir",
+    "seq_len": 128,
+    "in_channels": 6,
+    "num_classes": 6,
+    "d_model": 26,
+    "d_state": 8,
+    "expand": 2,
+    "d_inner": 52,
+    "dt_rank": 2,
+    "d_conv": 4,
+    "n_layers": 4,
+    "stem_kernel": 5,
+    "stem_padding": 2,
+    "patch_kernel": 16,
+    "patch_stride": 4,
+    "patch_padding": 4,
+    "patch_out_len": 31
+  },
+  "class_names": [
+    "Downstairs",
+    "Upstairs",
+    "Walking",
+    "Jogging",
+    "Sitting",
+    "Standing"
+  ]
+}

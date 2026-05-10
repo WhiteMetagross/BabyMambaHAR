@@ -1,0 +1,73 @@
+{
+  "modelName": "NanoHARMamba",
+  "dataset": "motionsense",
+  "seed": 29,
+  "bestAccuracy": 83.9090883731842,
+  "bestF1": 84.89612702239701,
+  "bestPrecision": 84.59087618740742,
+  "bestRecall": 85.46692544393339,
+  "finalAccuracy": 82.4999988079071,
+  "parameters": 28230,
+  "macs": 3613440,
+  "sizeMb": 0.10807037353515625,
+  "latencyMs": 0.0,
+  "throughput": 0.0,
+  "epochsTrained": 28,
+  "totalEpochs": 200,
+  "trainTime": 1328.1414377689362,
+  "earlyStopped": true,
+  "checkpointPath": "results/training/nanoharmamba/fixed_seed29/motionsense/20260510_050008/best_model_seed29.pt",
+  "modelStatePath": "results/training/nanoharmamba/fixed_seed29/motionsense/20260510_050008/model_state_seed29.pt",
+  "runConfigPath": "results/training/nanoharmamba/fixed_seed29/motionsense/20260510_050008/run_config_seed29.json",
+  "resultPath": "results/training/nanoharmamba/fixed_seed29/motionsense/20260510_050008/train_result_seed29.json",
+  "confusionMatrix": [
+    [
+      345,
+      46,
+      10,
+      1,
+      0,
+      0
+    ],
+    [
+      42,
+      399,
+      37,
+      0,
+      0,
+      0
+    ],
+    [
+      15,
+      120,
+      901,
+      3,
+      0,
+      5
+    ],
+    [
+      8,
+      1,
+      0,
+      392,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      897,
+      222
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      198,
+      758
+    ]
+  ]
+}

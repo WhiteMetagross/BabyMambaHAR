@@ -1,0 +1,37 @@
+{
+  "dataset": "skoda",
+  "seed": 29,
+  "run_tag": "fixed_seed29",
+  "epochs": 200,
+  "warmup_epochs": 10,
+  "patience": 10,
+  "seq_len": 98,
+  "accumulation_steps": 1,
+  "use_torch_compile": false,
+  "architecture_config": {
+    "dModel": 24,
+    "dState": 16,
+    "nLayers": 4,
+    "expand": 2,
+    "dtRank": 2,
+    "dConv": 4,
+    "bidirectional": true,
+    "weightTied": true,
+    "useGatedAttention": true,
+    "channelIndependent": true
+  },
+  "hparams": {
+    "lr": 0.001,
+    "weightDecay": 0.05,
+    "dropout": 0.1,
+    "batchSize": 512,
+    "labelSmoothing": 0.1
+  },
+  "dataset_spec": {
+    "name": "Skoda",
+    "numClasses": 11,
+    "inChannels": 30,
+    "seqLen": 98,
+    "root": "./datasets/Skoda"
+  }
+}
