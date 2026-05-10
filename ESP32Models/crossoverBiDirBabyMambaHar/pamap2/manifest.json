@@ -1,16 +1,17 @@
 {
-  "variant": "crossover_bidir",
+  "variant": "crossoverBiDirBabyMambaHar",
   "dataset": "pamap2",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\pamap2\\20260108_190344\\best_model_seed74096.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\pamap2\\20260108_190344",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\pamap2\\best_model_seed74096.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\pamap2",
   "seed": 74096,
   "sample_index": 0,
   "label": 0,
   "pytorch_top1": 2,
   "engine_top1": 2,
-  "parity_percent": 99.99998440957683,
+  "parity_percent": 99.99997252861021,
   "config": {
-    "variant": "crossover_bidir",
+    "variant": "crossoverBiDirBabyMambaHar",
+    "scan_impl": "sequential_recurrence",
     "seq_len": 128,
     "in_channels": 19,
     "num_classes": 12,
@@ -41,5 +42,6 @@
     "Vacuum Cleaning",
     "Ironing",
     "Rope Jumping"
-  ]
+  ],
+  "projection_format": "int8"
 }

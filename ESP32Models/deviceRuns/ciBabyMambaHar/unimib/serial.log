@@ -1,0 +1,68 @@
+ console UART I/O pins
+I (195) cpu_start: Pro cpu start user code
+I (195) cpu_start: cpu freq: 240000000 Hz
+I (197) app_init: Application information:
+I (201) app_init: Project name:     babymamba_esp32_native
+I (206) app_init: App version:      1
+I (210) app_init: Compile time:     May 10 2026 18:58:28
+I (215) app_init: ELF file SHA256:  0cfcfc924...
+I (219) app_init: ESP-IDF:          v5.4.4
+I (223) efuse_init: Min chip rev:     v0.0
+I (227) efuse_init: Max chip rev:     v3.99
+I (231) efuse_init: Chip rev:         v3.1
+I (235) heap_init: Initializing. RAM available for dynamic allocation:
+I (241) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (246) heap_init: At 3FFC5050 len 0001AFB0 (107 KiB): DRAM
+I (251) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (257) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (262) heap_init: At 4008BF44 len 000140BC (80 KiB): IRAM
+I (269) spi_flash: detected chip: generic
+I (271) spi_flash: flash io: dio
+W (274) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (287) main_task: Started on CPU0
+I (289) main_task: Calling app_main()
+I (293) main_task: Returned from app_main()
+I (293) BABYMAMBA_ESP32: Chip model=1 cores=2 revision=301 flash_embedded=no psram=no
+=== BABYMAMBA ESP32 START ===
+variant=ci_babymamba
+dataset=unimib
+display_name=UniMiB-SHAR
+seed=29
+seq_len=128
+in_channels=3
+num_classes=9
+scratch_bytes=71944
+heap_total_before=243204
+heap_free_before=201952
+largest_block_before=110592
+iter_01_latency_us=386408
+iter_02_latency_us=385740
+iter_03_latency_us=385813
+iter_04_latency_us=385755
+iter_05_latency_us=385845
+iter_06_latency_us=385648
+iter_07_latency_us=385804
+iter_08_latency_us=385731
+iter_09_latency_us=385795
+iter_10_latency_us=385754
+avg_latency_ms=385.829315
+parity_vs_pytorch_pct=98.813705
+parity_vs_engine_pct=98.798592
+max_abs_err_vs_pytorch=0.029454
+predicted_class=0
+predicted_label=Activity_0
+expected_label=Activity_0
+heap_total_after=243196
+heap_free_after=185208
+heap_used_after=57988
+largest_block_after=110592
+logit_00=4.353865147
+logit_01=-0.050377220
+logit_02=-1.072241187
+logit_03=-0.162276506
+logit_04=-0.582789958
+logit_05=-0.401411533
+logit_06=0.785660446
+logit_07=-1.435144305
+logit_08=0.369424671
+=== DONE ===

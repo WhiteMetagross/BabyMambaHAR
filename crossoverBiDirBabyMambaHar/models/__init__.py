@@ -4,7 +4,7 @@ BabyMamba-Crossover-BiDir Models Package
 This package contains the BabyMamba-Crossover-BiDir architecture for Human Activity Recognition.
 """
 
-from .CrossoverBiDirBabyMambaHar import (
+from .crossoverBiDirBabyMamba import (
     CrossoverBiDirBabyMambaHar,
     createCrossoverBiDirBabyMambaHar,
     CROSSOVER_BIDIR_BABYMAMBA_CONFIG,

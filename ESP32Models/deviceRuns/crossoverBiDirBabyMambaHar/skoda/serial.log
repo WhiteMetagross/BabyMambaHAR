@@ -1,0 +1,70 @@
+ (199) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (199) cpu_start: Pro cpu start user code
+I (199) cpu_start: cpu freq: 240000000 Hz
+I (201) app_init: Application information:
+I (205) app_init: Project name:     babymamba_esp32_native
+I (210) app_init: App version:      1
+I (213) app_init: Compile time:     May 10 2026 18:58:28
+I (218) app_init: ELF file SHA256:  4c4f90611...
+I (223) app_init: ESP-IDF:          v5.4.4
+I (227) efuse_init: Min chip rev:     v0.0
+I (230) efuse_init: Max chip rev:     v3.99
+I (234) efuse_init: Chip rev:         v3.1
+I (238) heap_init: Initializing. RAM available for dynamic allocation:
+I (245) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (250) heap_init: At 3FFB9DE0 len 00026220 (152 KiB): DRAM
+I (255) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (260) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (266) heap_init: At 4008BF44 len 000140BC (80 KiB): IRAM
+I (272) spi_flash: detected chip: generic
+I (275) spi_flash: flash io: dio
+W (278) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (290) main_task: Started on CPU0
+I (293) main_task: Calling app_main()
+I (296) main_task: Returned from app_main()
+I (296) BABYMAMBA_ESP32: Chip model=1 cores=2 revision=301 flash_embedded=no psram=no
+=== BABYMAMBA ESP32 START ===
+variant=crossover_bidir
+dataset=skoda
+display_name=Skoda
+seed=84507
+seq_len=98
+in_channels=30
+num_classes=11
+scratch_bytes=27412
+heap_total_before=288816
+heap_free_before=247564
+largest_block_before=114688
+iter_01_latency_us=125427
+iter_02_latency_us=125418
+iter_03_latency_us=125424
+iter_04_latency_us=125408
+iter_05_latency_us=125421
+iter_06_latency_us=125410
+iter_07_latency_us=125422
+iter_08_latency_us=125418
+iter_09_latency_us=125422
+iter_10_latency_us=125417
+avg_latency_ms=125.418709
+parity_vs_pytorch_pct=97.202003
+parity_vs_engine_pct=97.202011
+max_abs_err_vs_pytorch=0.109808
+predicted_class=3
+predicted_label=Gesture_2
+expected_label=Gesture_5
+heap_total_after=288816
+heap_free_after=247564
+heap_used_after=41252
+largest_block_after=114688
+logit_00=-0.518898427
+logit_01=-1.366711974
+logit_02=-0.858562768
+logit_03=8.475191116
+logit_04=-0.809316814
+logit_05=-0.008490519
+logit_06=2.168769360
+logit_07=-2.899070024
+logit_08=-0.771708667
+logit_09=-3.958278894
+logit_10=0.171334714
+=== DONE ===

@@ -1,8 +1,8 @@
 {
-  "variant": "ci_babymamba",
+  "variant": "ciBabyMambaHar",
   "dataset": "unimib",
-  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/unimib/20260510_083828/best_model_seed29.pt",
-  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/unimib/20260510_083828",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\unimib\\best_model_seed29.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\unimib",
   "seed": 29,
   "sample_index": 0,
   "label": 0,
@@ -10,7 +10,7 @@
   "engine_top1": 0,
   "parity_percent": 99.95361688779667,
   "config": {
-    "variant": "ci_babymamba",
+    "variant": "ciBabyMambaHar",
     "scan_impl": "sequential_recurrence",
     "seq_len": 128,
     "in_channels": 3,
@@ -39,5 +39,6 @@
     "Activity_6",
     "Activity_7",
     "Activity_8"
-  ]
+  ],
+  "projection_format": "int8"
 }

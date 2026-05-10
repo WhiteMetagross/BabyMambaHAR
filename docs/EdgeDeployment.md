@@ -22,7 +22,7 @@ flowchart LR
     C --> D["Pico 2 Bundles<br/>Pico2Models/"]
     C --> E["ESP32 Bundles<br/>ESP32Models/"]
     D --> F["Pico 2 Runtime<br/>embedded/pico2BabyMambaRuntime/"]
-    E --> G["ESP32 Runtime<br/>embedded/esp32BabyMambaRuntime/"]
+    E --> G["ESP32 Runtime<br/>embedded/esp32BabyMambaNative/"]
     F --> H["Serial Benchmark Logs<br/>Latency, RAM, Parity"]
     G --> I["Device Bring-Up Or Benchmark Study"]
 ```
@@ -58,9 +58,11 @@ The most important practical outcome is that both BabyMamba families were demons
 
 ## ESP32 Runtime:
 
-The ESP32 runtime scaffold is stored in `embedded/esp32BabyMambaRuntime/`. The same exported header format is used, so the deployment representation remains consistent across targets. The committed `ESP32Models/` directory therefore serves as a portable model bundle store for future ESP32-specific runtime studies.
+The native ESP32 runtime is stored in `embedded/esp32BabyMambaNative/`. This path was built with ESP-IDF and was used for the measured classic ESP32 study committed in `ESP32Models/babyMambaEsp32Metrics.json`. The recurrent scan is executed directly in C++, while the projection-heavy matrices are stored with row-wise `INT8` compression and float scales.
 
-The present repository snapshot should be interpreted carefully here. Device bundles are committed, but a full BabyMamba ESP32 benchmark table is not claimed in this repository release.
+The earlier Arduino-oriented scaffold is still preserved in `embedded/esp32BabyMambaRuntime/` for continuity, but the measured deployment path in this repository release is the native ESP-IDF runtime.
+
+The most important practical outcome is that both BabyMamba families were demonstrated on a classic no-PSRAM ESP32. The crossover family remained the stronger low-latency deployment choice, while the channel-independent family remained feasible after the projection path was compressed and the channel loop was split across both cores.
 
 ## Baseline Deployment Record:
 
@@ -79,4 +81,5 @@ The committed model and export folders were included so that the edge study rema
 - Checkpoints were preserved alongside their run summaries.
 - Generated headers were committed under device-specific folders.
 - Measured Pico 2 results were committed as JSON and Markdown.
+- Measured native ESP32 results were committed as JSON and Markdown.
 - The deployment code was kept human-readable and device-oriented.

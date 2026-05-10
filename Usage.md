@@ -83,13 +83,20 @@ The generated header contains the weights, fixture sample, class names, and pari
 
 ## Exporting ESP32 Model Bundles:
 
-The ESP32 bundle generation path uses the same recurrent C representation. A convenience wrapper is included for symmetry with the Pico 2 workflow.
+The ESP32 bundle generation path now uses the native deployment-oriented export configuration. The same recurrent representation is preserved, but the projection-heavy matrices are written with row-wise `INT8` storage and float scales so that the classic ESP32 path remains practical.
 
 ```bash
 python scripts/exportBabyMambaEsp32Models.py
 ```
 
 The generated output is written under `ESP32Models/`. The bundles are portable because the handcrafted recurrence engine is not tied to a graph compiler backend.
+
+If a direct export is preferred, the core exporter may be called explicitly.
+
+```bash
+python scripts/exportBabyMambaEdgeModels.py --variant ciBabyMambaHar --datasets all --output-root ESP32Models --projection-format int8
+python scripts/exportBabyMambaEdgeModels.py --variant crossoverBiDirBabyMambaHar --datasets all --output-root ESP32Models --projection-format int8
+```
 
 ## Reusing The Committed Baseline Device Bundles:
 
@@ -116,12 +123,29 @@ python scripts/runBabyMambaPico2Sweep.py --variants ciBabyMambaHar --datasets uc
 
 The output directory will contain serial logs and a merged JSON summary. The committed reference results are already available in `Pico2Models/babymamba_pico2_metrics.json`.
 
+## Running The Native ESP32 Sweep:
+
+The measured ESP32 study was carried out with the native ESP-IDF runtime in `embedded/esp32BabyMambaNative/`. The sweep helper below rebuilds the selected bundle, flashes the board, captures the serial log, and updates the committed metric files.
+
+```bash
+python scripts/runBabyMambaEsp32Sweep.py --variants all --datasets all --port COM9
+```
+
+When a narrower run is preferred, a smaller sweep may be used.
+
+```bash
+python scripts/runBabyMambaEsp32Sweep.py --variants ciBabyMambaHar --datasets motionsense,wisdm --port COM9
+```
+
+The committed ESP32 study summary is already available in `ESP32Models/babyMambaEsp32Metrics.json`.
+
 ## Runtime Directories:
 
 The main embedded runtime folders are listed below.
 
 - `embedded/pico2BabyMambaRuntime/`. Raspberry Pi Pico 2 runtime using the handcrafted recurrent engine.
-- `embedded/esp32BabyMambaRuntime/`. ESP32-oriented runtime scaffold that consumes the same generated header format.
+- `embedded/esp32BabyMambaRuntime/`. Earlier Arduino-oriented ESP32 runtime scaffold.
+- `embedded/esp32BabyMambaNative/`. Native ESP-IDF runtime used for the measured classic ESP32 study.
 
 In both cases, the active dataset bundle is selected by copying the desired `babyMambaWeights.h` file into the runtime project directory before compilation.
 

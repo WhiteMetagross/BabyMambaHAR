@@ -1,16 +1,17 @@
 {
-  "variant": "crossover_bidir",
+  "variant": "crossoverBiDirBabyMambaHar",
   "dataset": "opportunity",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\opportunity\\20260108_194152\\best_model_seed10734.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\opportunity\\20260108_194152",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\opportunity\\best_model_seed10734.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\opportunity",
   "seed": 10734,
   "sample_index": 0,
   "label": 0,
-  "pytorch_top1": 1,
-  "engine_top1": 1,
-  "parity_percent": 99.99999006368085,
+  "pytorch_top1": 0,
+  "engine_top1": 0,
+  "parity_percent": 99.99278971445165,
   "config": {
-    "variant": "crossover_bidir",
+    "variant": "crossoverBiDirBabyMambaHar",
+    "scan_impl": "sequential_recurrence",
     "seq_len": 128,
     "in_channels": 79,
     "num_classes": 5,
@@ -34,5 +35,6 @@
     "Walk",
     "Sit",
     "Lie"
-  ]
+  ],
+  "projection_format": "int8"
 }

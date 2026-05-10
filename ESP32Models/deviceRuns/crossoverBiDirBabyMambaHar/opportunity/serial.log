@@ -1,0 +1,67 @@
+ from partition at offset 0x10000
+I (195) boot: Disabling RNG early entropy source...
+I (208) cpu_start: Multicore app
+I (216) cpu_start: GPIO 3 and 1 are used as console UART I/O pins
+I (216) cpu_start: Pro cpu start user code
+I (216) cpu_start: cpu freq: 240000000 Hz
+I (218) app_init: Application information:
+I (222) app_init: Project name:     babymamba_esp32_native
+I (227) app_init: App version:      1
+I (231) app_init: Compile time:     May 10 2026 18:58:28
+I (236) app_init: ELF file SHA256:  ec6289963...
+I (240) app_init: ESP-IDF:          v5.4.4
+I (244) efuse_init: Min chip rev:     v0.0
+I (248) efuse_init: Max chip rev:     v3.99
+I (252) efuse_init: Chip rev:         v3.1
+I (256) heap_init: Initializing. RAM available for dynamic allocation:
+I (262) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (267) heap_init: At 3FFBB730 len 000248D0 (146 KiB): DRAM
+I (272) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (277) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (283) heap_init: At 4008BF44 len 000140BC (80 KiB): IRAM
+I (289) spi_flash: detected chip: generic
+I (292) spi_flash: flash io: dio
+W (295) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (307) main_task: Started on CPU0
+I (309) main_task: Calling app_main()
+I (313) main_task: Returned from app_main()
+I (313) BABYMAMBA_ESP32: Chip model=1 cores=2 revision=301 flash_embedded=no psram=no
+=== BABYMAMBA ESP32 START ===
+variant=crossover_bidir
+dataset=opportunity
+display_name=Opportunity
+seed=10734
+seq_len=128
+in_channels=79
+num_classes=5
+scratch_bytes=33892
+heap_total_before=282336
+heap_free_before=241084
+largest_block_before=110592
+iter_01_latency_us=272129
+iter_02_latency_us=272100
+iter_03_latency_us=271679
+iter_04_latency_us=272100
+iter_05_latency_us=271679
+iter_06_latency_us=272100
+iter_07_latency_us=271679
+iter_08_latency_us=272100
+iter_09_latency_us=271679
+iter_10_latency_us=272100
+avg_latency_ms=271.934509
+parity_vs_pytorch_pct=99.162827
+parity_vs_engine_pct=99.164650
+max_abs_err_vs_pytorch=0.045738
+predicted_class=0
+predicted_label=Null
+expected_label=Null
+heap_total_after=282336
+heap_free_after=241084
+heap_used_after=41252
+largest_block_after=110592
+logit_00=6.002458572
+logit_01=1.626397133
+logit_02=-0.547687113
+logit_03=-4.075666904
+logit_04=-3.073518276
+=== DONE ===

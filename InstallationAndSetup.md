@@ -54,9 +54,16 @@ For Raspberry Pi Pico 2 deployment, the following components are expected.
 
 For ESP32 export and runtime preparation, the following components are recommended.
 
-- Arduino CLI with an ESP32 board core, or ESP-IDF if a native runtime is preferred.
-- A serial upload utility appropriate to the connected board.
+- ESP-IDF v5.x for the native deployment path.
+- A serial-capable Python environment with `pyserial`.
+- A classic ESP32 or ESP32-S3 development board with USB flashing access.
 - Sufficient internal SRAM for the selected deployment target.
+
+If the native ESP32 path is to be reproduced exactly, the ESP-IDF toolchain should be validated after installation.
+
+```bash
+idf.py --version
+```
 
 ## Committed Artifact Layout:
 
@@ -95,3 +102,9 @@ python scripts/exportBabyMambaPico2Models.py
 ```
 
 The first command verifies the training stack. The second verifies that the export tooling is importable and that the committed model zoo is discoverable.
+
+If the native ESP32 runtime is to be tested as well, the following command may then be used as a narrow hardware smoke run.
+
+```bash
+python scripts/runBabyMambaEsp32Sweep.py --variants crossoverBiDirBabyMambaHar --datasets ucihar --port COM9
+```

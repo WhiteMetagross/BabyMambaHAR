@@ -59,12 +59,15 @@ The repository now includes a complete edge deployment path for the BabyMamba fa
 - Seed-29 baseline checkpoints for `TinyHAR`, `TinierHAR`, and `DeepConvLSTM`.
 - Device-ready header exports in `Pico2Models/` and `ESP32Models/`.
 - Measured Raspberry Pi Pico 2 benchmark logs and summary JSON files.
+- Measured native ESP32 benchmark logs and summary JSON files.
 - Baseline deployment summaries for Raspberry Pi Pico 2 and ESP32-class targets.
-- Runtime scaffolds for Raspberry Pi Pico 2 and ESP32-class Arduino targets.
+- Runtime scaffolds for Raspberry Pi Pico 2, the earlier ESP32 Arduino path, and the native ESP-IDF ESP32 path.
 
 The Pico 2 study was completed with a handcrafted recurrent engine. Very high parity with the PyTorch reference was retained after the export path was corrected for the channel-independent scan implementation. The resulting on-device measurements are summarized in [`docs/Pico2DeploymentResultsReport.md`](docs/Pico2DeploymentResultsReport.md).
 
 The repository also preserves the paper baseline deployment record. The baseline checkpoint zoo, Pico 2 bundles, ESP32 bundles, and measured hardware summaries are consolidated in [`docs/BaselineDeploymentResultsReport.md`](docs/BaselineDeploymentResultsReport.md).
+
+The native ESP32 study is now documented directly in [`docs/ESP32DeploymentResultsReport.md`](docs/ESP32DeploymentResultsReport.md). In that study, `CrossoverBiDirBabyMambaHar` completed all eight datasets with an average latency of `154.442 ms`, while `CiBabyMambaHar` completed all eight datasets with an average latency of `2768.142 ms`. These runs were carried out with handcrafted recurrent C++ inference, dual-core execution for the channel-independent path, and row-wise `INT8` projection storage with `float32` recurrent state.
 
 ## Reproducible Workflow:
 
@@ -89,10 +92,15 @@ For a minimal setup, the following sequence may be used.
 
 ## Results Snapshot:
 
-The committed Pico 2 study supports two practical conclusions.
+The committed Pico 2 and native ESP32 studies support two practical conclusions.
 
 - `CrossoverBiDirBabyMambaHar` was found to be the faster deployment family, with an average latency of `481.898 ms` across the eight dataset bundles.
 - `CiBabyMambaHar` was found to be the higher-latency family, with an average latency of `11762.049 ms`, while still preserving `99.9373%` average parity with the PyTorch reference on the Pico 2 study set.
+
+On native ESP32, the same ordering remained visible.
+
+- `CrossoverBiDirBabyMambaHar` reached `154.442 ms` average latency with `99.2019%` average parity.
+- `CiBabyMambaHar` reached `2768.142 ms` average latency with `99.3607%` average parity.
 
 These results should be interpreted with the model family differences in mind. The channel-independent formulation carries a heavier recurrence cost, while the crossover family benefits from a narrower and more deployment-friendly state layout.
 
