@@ -1,0 +1,36 @@
+{
+  "variant": "ci_babymamba",
+  "dataset": "daphnet",
+  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/daphnet/20260510_090103/best_model_seed29.pt",
+  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/daphnet/20260510_090103",
+  "seed": 29,
+  "sample_index": 0,
+  "label": 0,
+  "pytorch_top1": 0,
+  "engine_top1": 0,
+  "parity_percent": 99.99911065597189,
+  "config": {
+    "variant": "ci_babymamba",
+    "scan_impl": "sequential_recurrence",
+    "seq_len": 64,
+    "in_channels": 9,
+    "num_classes": 2,
+    "d_model": 24,
+    "d_state": 16,
+    "expand": 2,
+    "d_inner": 48,
+    "dt_rank": 2,
+    "d_conv": 4,
+    "n_layers": 4,
+    "stem_kernel": 5,
+    "stem_padding": 2,
+    "patch_kernel": 16,
+    "patch_stride": 4,
+    "patch_padding": 4,
+    "patch_out_len": 15
+  },
+  "class_names": [
+    "No Freeze",
+    "Freeze"
+  ]
+}

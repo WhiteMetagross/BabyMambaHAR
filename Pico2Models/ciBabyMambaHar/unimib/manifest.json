@@ -1,0 +1,43 @@
+{
+  "variant": "ci_babymamba",
+  "dataset": "unimib",
+  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/unimib/20260510_083828/best_model_seed29.pt",
+  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/unimib/20260510_083828",
+  "seed": 29,
+  "sample_index": 0,
+  "label": 0,
+  "pytorch_top1": 0,
+  "engine_top1": 0,
+  "parity_percent": 99.95361688779667,
+  "config": {
+    "variant": "ci_babymamba",
+    "scan_impl": "sequential_recurrence",
+    "seq_len": 128,
+    "in_channels": 3,
+    "num_classes": 9,
+    "d_model": 24,
+    "d_state": 16,
+    "expand": 2,
+    "d_inner": 48,
+    "dt_rank": 2,
+    "d_conv": 4,
+    "n_layers": 4,
+    "stem_kernel": 5,
+    "stem_padding": 2,
+    "patch_kernel": 16,
+    "patch_stride": 4,
+    "patch_padding": 4,
+    "patch_out_len": 31
+  },
+  "class_names": [
+    "Activity_0",
+    "Activity_1",
+    "Activity_2",
+    "Activity_3",
+    "Activity_4",
+    "Activity_5",
+    "Activity_6",
+    "Activity_7",
+    "Activity_8"
+  ]
+}
