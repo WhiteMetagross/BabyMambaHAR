@@ -1,0 +1,26 @@
+{
+  "model": "TinierHAR",
+  "modelKey": "tinierhar",
+  "dataset": "pamap2",
+  "seed": 29,
+  "parameterCount": 32489,
+  "sizes": {
+    "onnx_bytes": 140164,
+    "tflite_fp32_bytes": 342888,
+    "tflite_int8_bytes": 339952
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 1202936,
+    "tflite_int8_tensor_bytes": 305437
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinierhar_quant.tflite",
+    "modelHeader": "tinierhar_model.h",
+    "modelSource": "tinierhar_model.cpp"
+  }
+}

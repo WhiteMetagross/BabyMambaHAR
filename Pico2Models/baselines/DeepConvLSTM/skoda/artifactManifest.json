@@ -1,0 +1,26 @@
+{
+  "model": "DeepConvLSTM",
+  "modelKey": "deepconvlstm",
+  "dataset": "skoda",
+  "seed": 29,
+  "parameterCount": 139083,
+  "sizes": {
+    "onnx_bytes": 558649,
+    "tflite_fp32_bytes": 1126436,
+    "tflite_int8_bytes": 1403840
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 2227084,
+    "tflite_int8_tensor_bytes": 557666
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "deepconvlstm_quant.tflite",
+    "modelHeader": "deepconvlstm_model.h",
+    "modelSource": "deepconvlstm_model.cpp"
+  }
+}

@@ -36,6 +36,8 @@ Two model families are preserved in the committed checkpoint zoo.
 
 Each dataset directory contains the deployable checkpoint and its run metadata. This structure was chosen so that export generation can be repeated without rediscovering the original training workspace.
 
+The comparison-model assets are preserved in parallel under `models/baselines/`. Seed-29 checkpoints and deployment summaries are therefore available for `TinyHAR`, `TinierHAR`, and `DeepConvLSTM` without mixing the BabyMamba and baseline studies together.
+
 ## Export Representation:
 
 The export step is implemented in `scripts/exportBabyMambaEdgeModels.py`. The generated `babyMambaWeights.h` file contains the following components.
@@ -59,6 +61,16 @@ The most important practical outcome is that both BabyMamba families were demons
 The ESP32 runtime scaffold is stored in `embedded/esp32BabyMambaRuntime/`. The same exported header format is used, so the deployment representation remains consistent across targets. The committed `ESP32Models/` directory therefore serves as a portable model bundle store for future ESP32-specific runtime studies.
 
 The present repository snapshot should be interpreted carefully here. Device bundles are committed, but a full BabyMamba ESP32 benchmark table is not claimed in this repository release.
+
+## Baseline Deployment Record:
+
+The repository also contains the committed baseline deployment bundles and sanitized hardware summaries.
+
+- `Pico2Models/baselines/`. Preserved Pico 2 baseline bundles and the Pico 2 summary JSON.
+- `ESP32Models/baselines/`. Preserved ESP32 baseline bundles and the ESP32 summary JSON.
+- `docs/BaselineDeploymentResultsReport.md`. Consolidated interpretation of the baseline edge study.
+
+This separation was kept deliberately. The BabyMamba families rely on the handcrafted recurrent export path, whereas the preserved classical baselines are carried as comparison artifacts and should be read as supporting evidence in the broader edge study.
 
 ## Reproducibility Notes:
 

@@ -1,0 +1,26 @@
+{
+  "model": "TinierHAR",
+  "modelKey": "tinierhar",
+  "dataset": "daphnet",
+  "seed": 29,
+  "parameterCount": 16799,
+  "sizes": {
+    "onnx_bytes": 77398,
+    "tflite_fp32_bytes": 178384,
+    "tflite_int8_bytes": 173616
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 349608,
+    "tflite_int8_tensor_bytes": 90027
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinierhar_quant.tflite",
+    "modelHeader": "tinierhar_model.h",
+    "modelSource": "tinierhar_model.cpp"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "model": "TinyHAR",
+  "modelKey": "tinyhar",
+  "dataset": "daphnet",
+  "seed": 29,
+  "parameterCount": 42508,
+  "sizes": {
+    "onnx_bytes": 183393,
+    "tflite_fp32_bytes": 226756,
+    "tflite_int8_bytes": 138120
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 881204,
+    "tflite_int8_tensor_bytes": 222464
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinyhar_quant.tflite",
+    "modelHeader": "tinyhar_model.h",
+    "modelSource": "tinyhar_model.cpp"
+  }
+}

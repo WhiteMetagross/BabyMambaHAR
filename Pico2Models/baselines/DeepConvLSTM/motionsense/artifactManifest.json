@@ -1,0 +1,26 @@
+{
+  "model": "DeepConvLSTM",
+  "modelKey": "deepconvlstm",
+  "dataset": "motionsense",
+  "seed": 29,
+  "parameterCount": 131078,
+  "sizes": {
+    "onnx_bytes": 526641,
+    "tflite_fp32_bytes": 1269944,
+    "tflite_int8_bytes": 1961048
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 2684528,
+    "tflite_int8_tensor_bytes": 672012
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "deepconvlstm_quant.tflite",
+    "modelHeader": "deepconvlstm_model.h",
+    "modelSource": "deepconvlstm_model.cpp"
+  }
+}

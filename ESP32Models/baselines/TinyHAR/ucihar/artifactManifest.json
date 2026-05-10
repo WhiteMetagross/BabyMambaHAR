@@ -1,0 +1,26 @@
+{
+  "model": "TinyHAR",
+  "modelKey": "tinyhar",
+  "dataset": "ucihar",
+  "seed": 29,
+  "parameterCount": 42704,
+  "sizes": {
+    "onnx_bytes": 184182,
+    "tflite_fp32_bytes": 273684,
+    "tflite_int8_bytes": 221248
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 1588436,
+    "tflite_int8_tensor_bytes": 399284
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinyhar_quant.tflite",
+    "modelHeader": "tinyhar_model.h",
+    "modelSource": "tinyhar_model.cpp"
+  }
+}

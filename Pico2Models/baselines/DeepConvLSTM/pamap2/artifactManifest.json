@@ -1,0 +1,26 @@
+{
+  "model": "DeepConvLSTM",
+  "modelKey": "deepconvlstm",
+  "dataset": "pamap2",
+  "seed": 29,
+  "parameterCount": 135628,
+  "sizes": {
+    "onnx_bytes": 544843,
+    "tflite_fp32_bytes": 1288144,
+    "tflite_int8_bytes": 1965760
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 2716088,
+    "tflite_int8_tensor_bytes": 679920
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "deepconvlstm_quant.tflite",
+    "modelHeader": "deepconvlstm_model.h",
+    "modelSource": "deepconvlstm_model.cpp"
+  }
+}
