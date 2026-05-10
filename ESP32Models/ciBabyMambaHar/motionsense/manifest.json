@@ -1,8 +1,8 @@
 {
-  "variant": "ci_babymamba",
+  "variant": "ciBabyMambaHar",
   "dataset": "motionsense",
-  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/motionsense/20260510_050008/best_model_seed29.pt",
-  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/motionsense/20260510_050008",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\motionsense\\best_model_seed29.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\motionsense",
   "seed": 29,
   "sample_index": 0,
   "label": 0,
@@ -10,7 +10,7 @@
   "engine_top1": 0,
   "parity_percent": 99.93822181131691,
   "config": {
-    "variant": "ci_babymamba",
+    "variant": "ciBabyMambaHar",
     "scan_impl": "fallback_chunked",
     "seq_len": 128,
     "in_channels": 6,
@@ -36,5 +36,6 @@
     "Jogging",
     "Sitting",
     "Standing"
-  ]
+  ],
+  "projection_format": "int8"
 }

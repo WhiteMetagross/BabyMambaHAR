@@ -1,0 +1,71 @@
+GPIO 3 and 1 are used as console UART I/O pins
+I (197) cpu_start: Pro cpu start user code
+I (197) cpu_start: cpu freq: 240000000 Hz
+I (199) app_init: Application information:
+I (203) app_init: Project name:     babymamba_esp32_native
+I (208) app_init: App version:      1
+I (212) app_init: Compile time:     May 10 2026 18:58:28
+I (217) app_init: ELF file SHA256:  a10b64a22...
+I (221) app_init: ESP-IDF:          v5.4.4
+I (225) efuse_init: Min chip rev:     v0.0
+I (229) efuse_init: Max chip rev:     v3.99
+I (233) efuse_init: Chip rev:         v3.1
+I (237) heap_init: Initializing. RAM available for dynamic allocation:
+I (243) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (248) heap_init: At 3FFC5050 len 0001AFB0 (107 KiB): DRAM
+I (253) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (259) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (264) heap_init: At 4008BF44 len 000140BC (80 KiB): IRAM
+I (271) spi_flash: detected chip: generic
+I (273) spi_flash: flash io: dio
+W (276) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (289) main_task: Started on CPU0
+I (291) main_task: Calling app_main()
+I (295) main_task: Returned from app_main()
+I (295) BABYMAMBA_ESP32: Chip model=1 cores=2 revision=301 flash_embedded=no psram=no
+=== BABYMAMBA ESP32 START ===
+variant=ci_babymamba
+dataset=pamap2
+display_name=PAMAP2
+seed=29
+seq_len=128
+in_channels=19
+num_classes=12
+scratch_bytes=71944
+heap_total_before=243204
+heap_free_before=201952
+largest_block_before=110592
+iter_01_latency_us=1950772
+iter_02_latency_us=1949973
+iter_03_latency_us=1950172
+iter_04_latency_us=1950207
+iter_05_latency_us=1950046
+iter_06_latency_us=1949973
+iter_07_latency_us=1950172
+iter_08_latency_us=1950207
+iter_09_latency_us=1950046
+iter_10_latency_us=1949973
+avg_latency_ms=1950.154053
+parity_vs_pytorch_pct=99.564018
+parity_vs_engine_pct=99.562805
+max_abs_err_vs_pytorch=0.025414
+predicted_class=2
+predicted_label=Standing
+expected_label=Lying
+heap_total_after=243196
+heap_free_after=185208
+heap_used_after=57988
+largest_block_after=110592
+logit_00=-1.190697670
+logit_01=1.879006505
+logit_02=4.850385666
+logit_03=1.670702100
+logit_04=-0.531899452
+logit_05=-3.995728016
+logit_06=-2.087434292
+logit_07=1.199115038
+logit_08=1.309276938
+logit_09=-0.863107026
+logit_10=2.545642138
+logit_11=-2.308422327
+=== DONE ===

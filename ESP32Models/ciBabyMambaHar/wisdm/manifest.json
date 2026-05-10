@@ -1,8 +1,8 @@
 {
-  "variant": "ci_babymamba",
+  "variant": "ciBabyMambaHar",
   "dataset": "wisdm",
-  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/wisdm/20260510_052233/best_model_seed29.pt",
-  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/wisdm/20260510_052233",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\wisdm\\best_model_seed29.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\wisdm",
   "seed": 29,
   "sample_index": 0,
   "label": 1,
@@ -10,7 +10,7 @@
   "engine_top1": 1,
   "parity_percent": 99.99854128664083,
   "config": {
-    "variant": "ci_babymamba",
+    "variant": "ciBabyMambaHar",
     "scan_impl": "fallback_chunked",
     "seq_len": 128,
     "in_channels": 3,
@@ -36,5 +36,6 @@
     "Downstairs",
     "Sitting",
     "Standing"
-  ]
+  ],
+  "projection_format": "int8"
 }

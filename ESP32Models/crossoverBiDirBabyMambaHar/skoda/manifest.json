@@ -1,16 +1,17 @@
 {
-  "variant": "crossover_bidir",
+  "variant": "crossoverBiDirBabyMambaHar",
   "dataset": "skoda",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\skoda\\20260108_191733\\best_model_seed84507.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\skoda\\20260108_191733",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\skoda\\best_model_seed84507.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\skoda",
   "seed": 84507,
   "sample_index": 0,
   "label": 6,
-  "pytorch_top1": 2,
-  "engine_top1": 2,
-  "parity_percent": 99.99997153767026,
+  "pytorch_top1": 3,
+  "engine_top1": 3,
+  "parity_percent": 99.99995558317494,
   "config": {
-    "variant": "crossover_bidir",
+    "variant": "crossoverBiDirBabyMambaHar",
+    "scan_impl": "sequential_recurrence",
     "seq_len": 98,
     "in_channels": 30,
     "num_classes": 11,
@@ -40,5 +41,6 @@
     "Gesture_7",
     "Gesture_8",
     "Gesture_9"
-  ]
+  ],
+  "projection_format": "int8"
 }

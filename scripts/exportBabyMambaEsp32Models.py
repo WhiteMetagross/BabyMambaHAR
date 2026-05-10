@@ -14,6 +14,8 @@ def main() -> int:
         str(REPO_ROOT / "scripts" / "exportBabyMambaEdgeModels.py"),
         "--output-root",
         str(REPO_ROOT / "ESP32Models"),
+        "--projection-format",
+        "int8",
     ]
     completed = subprocess.run(cmd, cwd=str(REPO_ROOT), check=False)
     return int(completed.returncode)

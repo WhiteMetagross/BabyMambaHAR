@@ -1,16 +1,17 @@
 {
-  "variant": "crossover_bidir",
+  "variant": "crossoverBiDirBabyMambaHar",
   "dataset": "ucihar",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\uciHar\\20260108_180302\\best_model_seed84507.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\uciHar\\20260108_180302",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\ucihar\\best_model_seed84507.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\ucihar",
   "seed": 84507,
   "sample_index": 0,
   "label": 4,
   "pytorch_top1": 4,
   "engine_top1": 4,
-  "parity_percent": 99.99999291587329,
+  "parity_percent": 99.99999415239209,
   "config": {
-    "variant": "crossover_bidir",
+    "variant": "crossoverBiDirBabyMambaHar",
+    "scan_impl": "sequential_recurrence",
     "seq_len": 128,
     "in_channels": 9,
     "num_classes": 6,
@@ -35,5 +36,6 @@
     "Sitting",
     "Standing",
     "Laying"
-  ]
+  ],
+  "projection_format": "int8"
 }

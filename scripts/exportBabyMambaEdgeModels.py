@@ -193,6 +193,12 @@ def parse_args() -> argparse.Namespace:
         action="store_true",
         help="Fail immediately if a requested checkpoint is missing.",
     )
+    parser.add_argument(
+        "--projection-format",
+        choices=("float", "int8"),
+        default="float",
+        help="Storage format used for projection-heavy matrices in the generated C header.",
+    )
     return parser.parse_args()
 
 
@@ -965,6 +971,41 @@ def format_3d(name: str, array: np.ndarray) -> str:
     return "\n".join(lines)
 
 
+def format_2d_int8(name: str, array: np.ndarray) -> str:
+    rows, cols = array.shape
+    lines = [f"static const int8_t {name}[{rows}][{cols}] = {{"]
+    for row in array:
+        lines.append("  {" + ", ".join(str(int(v)) for v in row) + "},")
+    lines.append("};\n")
+    return "\n".join(lines)
+
+
+def quantize_rows_int8(array: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    matrix = np.asarray(array, dtype=np.float32)
+    if matrix.ndim != 2:
+        raise ValueError(f"Expected a 2D matrix for row-wise quantization, got {matrix.shape}")
+    quantized = np.zeros_like(matrix, dtype=np.int8)
+    scales = np.ones((matrix.shape[0],), dtype=np.float32)
+    for row_idx in range(matrix.shape[0]):
+        row = matrix[row_idx]
+        max_abs = float(np.max(np.abs(row)))
+        scale = max_abs / 127.0 if max_abs > 1e-8 else 1.0
+        quantized[row_idx] = np.clip(np.rint(row / scale), -127, 127).astype(np.int8)
+        scales[row_idx] = scale
+    return quantized, scales
+
+
+def format_projection_matrix(name: str, array: np.ndarray, projection_format: str) -> List[str]:
+    matrix = np.asarray(array, dtype=np.float32)
+    if projection_format == "int8":
+        quantized, scales = quantize_rows_int8(matrix)
+        return [
+            format_2d_int8(f"{name}Q", quantized),
+            format_1d(f"{name}Scale", scales),
+        ]
+    return [format_2d(name, matrix)]
+
+
 def write_crossover_header(
     export_dir: Path,
     spec: DatasetSpec,
@@ -974,6 +1015,7 @@ def write_crossover_header(
     label: int,
     pytorch_logits: np.ndarray,
     engine_logits: np.ndarray,
+    projection_format: str,
 ) -> None:
     config = arrays["config"]
     assert isinstance(config, dict)
@@ -999,6 +1041,7 @@ def write_crossover_header(
         f"#define BABYMAMBA_PATCH_STRIDE {config['patch_stride']}",
         f"#define BABYMAMBA_PATCH_OUT_LEN {config['patch_out_len']}",
         f"#define BABYMAMBA_SCAN_IMPL_FALLBACK {1 if config.get('scan_impl') == 'fallback_chunked' else 0}",
+        f"#define BABYMAMBA_USE_INT8_PROJECTIONS {1 if projection_format == 'int8' else 0}",
         f"#define BABYMAMBA_FIXTURE_LABEL {label}",
         "",
     ]
@@ -1010,7 +1053,9 @@ def write_crossover_header(
     lines.append(format_3d("kStemWeight", np.asarray(arrays["stemWeight"], dtype=np.float32)))
     lines.append(format_1d("kStemBias", np.asarray(arrays["stemBias"], dtype=np.float32)))
     lines.append(format_2d("kPatchDepthwise", np.asarray(arrays["patchDepthwise"], dtype=np.float32)))
-    lines.append(format_2d("kPatchPointwise", np.asarray(arrays["patchPointwise"], dtype=np.float32)))
+    lines.extend(
+        format_projection_matrix("kPatchPointwise", np.asarray(arrays["patchPointwise"], dtype=np.float32), projection_format)
+    )
     lines.append(format_1d("kPatchBias", np.asarray(arrays["patchBias"], dtype=np.float32)))
     lines.append(format_3d("kPosEmbed", np.asarray(arrays["posEmbed"], dtype=np.float32)))
 
@@ -1025,17 +1070,21 @@ def write_crossover_header(
         lines.append(format_1d(f"{prefix}PostNormBias", np.asarray(layer["postNormBias"], dtype=np.float32)))
         lines.append(format_2d(f"{prefix}ALog", np.asarray(layer["ALog"], dtype=np.float32)))
         lines.append(format_1d(f"{prefix}D", np.asarray(layer["D"], dtype=np.float32)))
-        lines.append(format_2d(f"{prefix}InProj", np.asarray(layer["inProj"], dtype=np.float32)))
+        lines.extend(format_projection_matrix(f"{prefix}InProj", np.asarray(layer["inProj"], dtype=np.float32), projection_format))
         lines.append(format_2d(f"{prefix}Conv1dWeight", np.asarray(layer["conv1dWeight"], dtype=np.float32)))
         lines.append(format_1d(f"{prefix}Conv1dBias", np.asarray(layer["conv1dBias"], dtype=np.float32)))
-        lines.append(format_2d(f"{prefix}XProj", np.asarray(layer["xProj"], dtype=np.float32)))
-        lines.append(format_2d(f"{prefix}DtProjWeight", np.asarray(layer["dtProjWeight"], dtype=np.float32)))
+        lines.extend(format_projection_matrix(f"{prefix}XProj", np.asarray(layer["xProj"], dtype=np.float32), projection_format))
+        lines.extend(
+            format_projection_matrix(f"{prefix}DtProjWeight", np.asarray(layer["dtProjWeight"], dtype=np.float32), projection_format)
+        )
         lines.append(format_1d(f"{prefix}DtProjBias", np.asarray(layer["dtProjBias"], dtype=np.float32)))
-        lines.append(format_2d(f"{prefix}OutProj", np.asarray(layer["outProj"], dtype=np.float32)))
+        lines.extend(format_projection_matrix(f"{prefix}OutProj", np.asarray(layer["outProj"], dtype=np.float32), projection_format))
 
     lines.append(format_1d("kHeadNormWeight", np.asarray(arrays["headNormWeight"], dtype=np.float32)))
     lines.append(format_1d("kHeadNormBias", np.asarray(arrays["headNormBias"], dtype=np.float32)))
-    lines.append(format_2d("kHeadLinearWeight", np.asarray(arrays["headLinearWeight"], dtype=np.float32)))
+    lines.extend(
+        format_projection_matrix("kHeadLinearWeight", np.asarray(arrays["headLinearWeight"], dtype=np.float32), projection_format)
+    )
     lines.append(format_1d("kHeadLinearBias", np.asarray(arrays["headLinearBias"], dtype=np.float32)))
 
     flat_input = sample.reshape(-1).astype(np.float32)
@@ -1056,6 +1105,7 @@ def write_ci_header(
     label: int,
     pytorch_logits: np.ndarray,
     engine_logits: np.ndarray,
+    projection_format: str,
 ) -> None:
     config = arrays["config"]
     assert isinstance(config, dict)
@@ -1081,6 +1131,7 @@ def write_ci_header(
         f"#define BABYMAMBA_PATCH_STRIDE {config['patch_stride']}",
         f"#define BABYMAMBA_PATCH_OUT_LEN {config['patch_out_len']}",
         f"#define BABYMAMBA_SCAN_IMPL_FALLBACK {1 if config.get('scan_impl') == 'fallback_chunked' else 0}",
+        f"#define BABYMAMBA_USE_INT8_PROJECTIONS {1 if projection_format == 'int8' else 0}",
         f"#define BABYMAMBA_FIXTURE_LABEL {label}",
         "",
     ]
@@ -1092,7 +1143,9 @@ def write_ci_header(
     lines.append(format_3d("kStemWeight", np.asarray(arrays["stemWeight"], dtype=np.float32)))
     lines.append(format_1d("kStemBias", np.asarray(arrays["stemBias"], dtype=np.float32)))
     lines.append(format_2d("kPatchDepthwise", np.asarray(arrays["patchDepthwise"], dtype=np.float32)))
-    lines.append(format_2d("kPatchPointwise", np.asarray(arrays["patchPointwise"], dtype=np.float32)))
+    lines.extend(
+        format_projection_matrix("kPatchPointwise", np.asarray(arrays["patchPointwise"], dtype=np.float32), projection_format)
+    )
     lines.append(format_1d("kPatchBias", np.asarray(arrays["patchBias"], dtype=np.float32)))
     lines.append(format_3d("kPosEmbed", np.asarray(arrays["posEmbed"], dtype=np.float32)))
 
@@ -1107,20 +1160,30 @@ def write_ci_header(
         lines.append(format_1d(f"{prefix}PostNormBias", np.asarray(layer["postNormBias"], dtype=np.float32)))
         lines.append(format_2d(f"{prefix}ALog", np.asarray(layer["ALog"], dtype=np.float32)))
         lines.append(format_1d(f"{prefix}D", np.asarray(layer["D"], dtype=np.float32)))
-        lines.append(format_2d(f"{prefix}InProj", np.asarray(layer["inProj"], dtype=np.float32)))
+        lines.extend(format_projection_matrix(f"{prefix}InProj", np.asarray(layer["inProj"], dtype=np.float32), projection_format))
         lines.append(format_2d(f"{prefix}Conv1dWeight", np.asarray(layer["conv1dWeight"], dtype=np.float32)))
         lines.append(format_1d(f"{prefix}Conv1dBias", np.asarray(layer["conv1dBias"], dtype=np.float32)))
-        lines.append(format_2d(f"{prefix}XProj", np.asarray(layer["xProj"], dtype=np.float32)))
-        lines.append(format_2d(f"{prefix}DtProjWeight", np.asarray(layer["dtProjWeight"], dtype=np.float32)))
+        lines.extend(format_projection_matrix(f"{prefix}XProj", np.asarray(layer["xProj"], dtype=np.float32), projection_format))
+        lines.extend(
+            format_projection_matrix(f"{prefix}DtProjWeight", np.asarray(layer["dtProjWeight"], dtype=np.float32), projection_format)
+        )
         lines.append(format_1d(f"{prefix}DtProjBias", np.asarray(layer["dtProjBias"], dtype=np.float32)))
-        lines.append(format_2d(f"{prefix}OutProj", np.asarray(layer["outProj"], dtype=np.float32)))
+        lines.extend(format_projection_matrix(f"{prefix}OutProj", np.asarray(layer["outProj"], dtype=np.float32), projection_format))
 
-    lines.append(format_2d("kGatedProjectionWeight", np.asarray(arrays["gatedProjectionWeight"], dtype=np.float32)))
+    lines.extend(
+        format_projection_matrix(
+            "kGatedProjectionWeight",
+            np.asarray(arrays["gatedProjectionWeight"], dtype=np.float32),
+            projection_format,
+        )
+    )
     lines.append(format_1d("kGatedProjectionBias", np.asarray(arrays["gatedProjectionBias"], dtype=np.float32)))
     lines.append(format_1d("kGatedContext", np.asarray(arrays["gatedContext"], dtype=np.float32)))
     lines.append(format_1d("kHeadNormWeight", np.asarray(arrays["headNormWeight"], dtype=np.float32)))
     lines.append(format_1d("kHeadNormBias", np.asarray(arrays["headNormBias"], dtype=np.float32)))
-    lines.append(format_2d("kHeadLinearWeight", np.asarray(arrays["headLinearWeight"], dtype=np.float32)))
+    lines.extend(
+        format_projection_matrix("kHeadLinearWeight", np.asarray(arrays["headLinearWeight"], dtype=np.float32), projection_format)
+    )
     lines.append(format_1d("kHeadLinearBias", np.asarray(arrays["headLinearBias"], dtype=np.float32)))
 
     flat_input = sample.reshape(-1).astype(np.float32)
@@ -1139,6 +1202,7 @@ def main() -> None:
     args.output_root.mkdir(parents=True, exist_ok=True)
     summary_payload: Dict[str, object] = {
         "variant": args.variant,
+        "projection_format": args.projection_format,
         "requested_datasets": dataset_keys,
         "exports": [],
         "missing": [],
@@ -1199,6 +1263,7 @@ def main() -> None:
             "parity_percent": parity,
             "config": arrays["config"],
             "class_names": list(spec.class_names),
+            "projection_format": args.projection_format,
         }
 
         if args.variant == "crossoverBiDirBabyMambaHar":
@@ -1211,6 +1276,7 @@ def main() -> None:
                 label=label,
                 pytorch_logits=pytorch_logits,
                 engine_logits=engine_logits,
+                projection_format=args.projection_format,
             )
         else:
             write_ci_header(
@@ -1222,6 +1288,7 @@ def main() -> None:
                 label=label,
                 pytorch_logits=pytorch_logits,
                 engine_logits=engine_logits,
+                projection_format=args.projection_format,
             )
         (export_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 

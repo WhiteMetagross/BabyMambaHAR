@@ -1,8 +1,8 @@
 {
-  "variant": "ci_babymamba",
+  "variant": "ciBabyMambaHar",
   "dataset": "pamap2",
-  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/pamap2/20260510_075232/best_model_seed29.pt",
-  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/pamap2/20260510_075232",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\pamap2\\best_model_seed29.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\pamap2",
   "seed": 29,
   "sample_index": 0,
   "label": 0,
@@ -10,7 +10,7 @@
   "engine_top1": 2,
   "parity_percent": 99.9856986119994,
   "config": {
-    "variant": "ci_babymamba",
+    "variant": "ciBabyMambaHar",
     "scan_impl": "sequential_recurrence",
     "seq_len": 128,
     "in_channels": 19,
@@ -42,5 +42,6 @@
     "Vacuum Cleaning",
     "Ironing",
     "Rope Jumping"
-  ]
+  ],
+  "projection_format": "int8"
 }

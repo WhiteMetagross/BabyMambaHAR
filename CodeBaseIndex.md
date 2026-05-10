@@ -121,6 +121,11 @@ Re-implementations of the comparison models used for fair BabyMamba-HAR benchmar
 | `trainCiBabyMambaHar.py` | Main training script for CI-BabyMamba-HAR. Supports training on any dataset with 5 random seeds, 200 epochs, early stopping (patience=10), linear warmup (10 epochs), mixed-precision (AMP) training, and optional loading of HPO-optimized hyperparameters. Includes Signal Rescue recipes for Skoda, PAMAP2, and Daphnet datasets. |
 | `hpoCiBabyMambaHar.py` | Hyperparameter optimization for CI-BabyMamba-HAR using Optuna. Searches over learning rate, weight decay, and dropout while keeping the architecture frozen. Uses 50 trials with 10 epochs per trial and TPE sampler. |
 | `trainBaselines.py` | Training script for all baseline models (DeepConvLSTM, TinierHAR, TinyHAR, LightDeepConvLSTM) with the same training protocol as CI-BabyMamba-HAR for fair comparison. |
+| `exportBabyMambaEdgeModels.py` | Core handcrafted-export generator for Pico 2 and ESP32. Supports float and row-wise `INT8` projection storage, fixture export, and parity metadata generation. |
+| `exportBabyMambaPico2Models.py` | Convenience wrapper that writes the BabyMamba Pico 2 bundles into `Pico2Models/`. |
+| `exportBabyMambaEsp32Models.py` | Convenience wrapper that writes the BabyMamba ESP32 bundles into `ESP32Models/` with the native `INT8` projection configuration. |
+| `runBabyMambaPico2Sweep.py` | Serial deployment and measurement harness for the Raspberry Pi Pico 2 runtime. |
+| `runBabyMambaEsp32Sweep.py` | Native ESP-IDF deployment and serial measurement harness for the classic ESP32 BabyMamba study. |
 | `hpoBaselines.py` | HPO script for baseline models using the same Optuna protocol. |
 | `runBaselines.py` | Convenience script to run training for all baseline models across all datasets. |
 | `runBaselineRetraining.py` | Sequential seed-29 baseline retraining launcher used for the committed paper-aligned checkpoint sweep. |
@@ -158,6 +163,7 @@ Each YAML file contains dataset-specific configuration parameters including inpu
 | `docs/img/ssm_block_detail.png` | Detailed diagram of the Weight-Tied Bidirectional SSM Block internals, including the selective scan mechanism. |
 | `docs/img/babymamba_results_grid.png` | Grid visualization of benchmark results across all datasets and models. |
 | `docs/img/babymamba_ablation_combined.png` | Combined ablation study results visualization. |
+| `docs/ESP32DeploymentResultsReport.md` | Native ESP32 deployment report for both BabyMamba families, including the `INT8` projection optimization path. |
 | `docs/BaselineDeploymentResultsReport.md` | Consolidated baseline checkpoint and hardware deployment report for Pico 2 and ESP32. |
 
 ---

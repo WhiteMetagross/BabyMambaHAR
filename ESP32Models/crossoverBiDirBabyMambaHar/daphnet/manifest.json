@@ -1,16 +1,17 @@
 {
-  "variant": "crossover_bidir",
+  "variant": "crossoverBiDirBabyMambaHar",
   "dataset": "daphnet",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\daphnet\\20260108_192416\\best_model_seed84507.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\MandalTinyDLAlgorithm\\SensorNanoMamba\\results\\training\\daphnet\\20260108_192416",
+  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\daphnet\\best_model_seed84507.pt",
+  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\daphnet",
   "seed": 84507,
   "sample_index": 0,
   "label": 0,
-  "pytorch_top1": 1,
-  "engine_top1": 1,
-  "parity_percent": 99.99999435293319,
+  "pytorch_top1": 0,
+  "engine_top1": 0,
+  "parity_percent": 99.99998709247961,
   "config": {
-    "variant": "crossover_bidir",
+    "variant": "crossoverBiDirBabyMambaHar",
+    "scan_impl": "sequential_recurrence",
     "seq_len": 64,
     "in_channels": 9,
     "num_classes": 2,
@@ -31,5 +32,6 @@
   "class_names": [
     "No Freeze",
     "Freeze"
-  ]
+  ],
+  "projection_format": "int8"
 }

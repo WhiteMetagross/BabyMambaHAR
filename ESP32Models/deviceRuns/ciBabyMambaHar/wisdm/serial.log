@@ -1,0 +1,65 @@
+used as console UART I/O pins
+I (196) cpu_start: Pro cpu start user code
+I (196) cpu_start: cpu freq: 240000000 Hz
+I (198) app_init: Application information:
+I (202) app_init: Project name:     babymamba_esp32_native
+I (207) app_init: App version:      1
+I (210) app_init: Compile time:     May 10 2026 18:58:28
+I (215) app_init: ELF file SHA256:  b4392ed46...
+I (220) app_init: ESP-IDF:          v5.4.4
+I (223) efuse_init: Min chip rev:     v0.0
+I (227) efuse_init: Max chip rev:     v3.99
+I (231) efuse_init: Chip rev:         v3.1
+I (235) heap_init: Initializing. RAM available for dynamic allocation:
+I (241) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (246) heap_init: At 3FFC5050 len 0001AFB0 (107 KiB): DRAM
+I (252) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (257) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (263) heap_init: At 4008BF44 len 000140BC (80 KiB): IRAM
+I (269) spi_flash: detected chip: generic
+I (272) spi_flash: flash io: dio
+W (275) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (287) main_task: Started on CPU0
+I (290) main_task: Calling app_main()
+I (293) main_task: Returned from app_main()
+I (293) BABYMAMBA_ESP32: Chip model=1 cores=2 revision=301 flash_embedded=no psram=no
+=== BABYMAMBA ESP32 START ===
+variant=ci_babymamba
+dataset=wisdm
+display_name=WISDM
+seed=29
+seq_len=128
+in_channels=3
+num_classes=6
+scratch_bytes=71944
+heap_total_before=243204
+heap_free_before=201952
+largest_block_before=110592
+iter_01_latency_us=1679701
+iter_02_latency_us=1679060
+iter_03_latency_us=1679263
+iter_04_latency_us=1679022
+iter_05_latency_us=1679236
+iter_06_latency_us=1679047
+iter_07_latency_us=1679261
+iter_08_latency_us=1679002
+iter_09_latency_us=1679226
+iter_10_latency_us=1679065
+avg_latency_ms=1679.188477
+parity_vs_pytorch_pct=99.749390
+parity_vs_engine_pct=99.749062
+max_abs_err_vs_pytorch=0.006177
+predicted_class=1
+predicted_label=Jogging
+expected_label=Jogging
+heap_total_after=243196
+heap_free_after=185208
+heap_used_after=57988
+largest_block_after=110592
+logit_00=-0.955350459
+logit_01=3.057069778
+logit_02=-0.981326640
+logit_03=-0.923024237
+logit_04=-1.140500307
+logit_05=-1.076035261
+=== DONE ===

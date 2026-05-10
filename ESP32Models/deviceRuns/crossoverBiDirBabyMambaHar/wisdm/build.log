@@ -1,0 +1,71 @@
+Executing action: all (aliases: build)
+Running ninja in directory C:\Users\Xeron\Desktop\MandalTinyDLAlgorithm\SensorNanoMamba\embedded\babymamba_esp32_native\build
+Executing "ninja all"...
+[1/9] Performing build step for 'bootloader'
+
+[1/1] C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Xeron\Desktop\MandalTinyDLAlgorithm\SensorNanoMamba\embedded\babymamba_esp32_native\build\bootloader\esp-idf\esptool_py && C:\Users\Xeron\.espressif\python_env\idf5.4_py3.13_env\Scripts\python.exe C:/esp/v5.4.4/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 C:/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/embedded/babymamba_esp32_native/build/bootloader/bootloader.bin"
+
+Bootloader binary size 0x65b0 bytes. 0xa50 bytes (9%) free.
+
+
+
+[2/9] No install step for 'bootloader'
+
+[3/9] Completed 'bootloader'
+
+[4/9] Building CXX object esp-idf/main/CMakeFiles/__idf_main.dir/main.cpp.obj
+
+C:/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/embedded/babymamba_esp32_native/main/main.cpp:103:6: warning: 'void {anonymous}::ensureCiWorkerTask()' defined but not used [-Wunused-function]
+  103 | void ensureCiWorkerTask() {
+      |      ^~~~~~~~~~~~~~~~~~
+C:/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/embedded/babymamba_esp32_native/main/main.cpp:47:7: warning: 'float {anonymous}::meanAbs(const float*, int)' defined but not used [-Wunused-function]
+   47 | float meanAbs(const float* values, int count) {
+
+      |       ^~~~~~~
+
+[5/9] Linking C static library esp-idf\main\libmain.a
+
+[6/9] Generating ld/sections.ld
+
+[7/9] Linking CXX executable babymamba_esp32_native.elf
+
+[8/9] Generating binary image from built executable
+
+esptool.py v4.11.0
+
+
+Creating esp32 image...
+
+
+Merged 2 ELF sections
+
+
+Successfully created esp32 image.
+
+
+Generated C:/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/embedded/babymamba_esp32_native/build/babymamba_esp32_native.bin
+
+[9/9] C:\WINDOWS\system32\cmd.exe /C "cd /D C:\Users\Xeron\Desktop\MandalTinyDLAlgorithm\SensorNanoMamba\embedded\babymamba_esp32_native\build\esp-idf\esptool_py && C:\Users\Xeron\.espressif\python_env\idf5.4_py3.13_env\Scripts\python.exe C:/esp/v5.4.4/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app C:/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/embedded/babymamba_esp32_native/build/partition_table/partition-table.bin C:/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/embedded/babymamba_esp32_native/build/babymamba_esp32_native.bin"
+
+babymamba_esp32_native.bin binary size 0x32c40 bytes. Smallest app partition is 0x100000 bytes. 0xcd3c0 bytes (80%) free.
+
+
+
+
+Project build complete. To flash, run:
+ idf.py flash
+or
+ idf.py -p PORT flash
+or
+ python -m esptool --chip esp32 -b 460800 --before default_reset --after hard_reset write_flash --flash_mode dio --flash_size 2MB --flash_freq 40m 0x1000 build\bootloader\bootloader.bin 0x8000 build\partition_table\partition-table.bin 0x10000 build\babymamba_esp32_native.bin
+or from the "C:\Users\Xeron\Desktop\MandalTinyDLAlgorithm\SensorNanoMamba\embedded\babymamba_esp32_native\build" directory
+ python -m esptool --chip esp32 -b 460800 --before default_reset --after hard_reset write_flash "@flash_args"
+
+Activating ESP-IDF 5.4
+Setting IDF_PATH to 'C:\esp\v5.4.4\esp-idf'.
+* Checking python version ... 3.13.13
+* Checking python dependencies ... OK
+* Deactivating the current ESP-IDF environment (if any) ... OK
+* Establishing a new ESP-IDF environment ... OK
+* Identifying shell ... cmd.exe
+* Detecting outdated tools in system ... OK - no outdated tools found

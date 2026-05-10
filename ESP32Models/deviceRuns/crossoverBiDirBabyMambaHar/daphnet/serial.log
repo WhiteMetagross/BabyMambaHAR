@@ -1,0 +1,60 @@
+: Pro cpu start user code
+I (192) cpu_start: cpu freq: 240000000 Hz
+I (194) app_init: Application information:
+I (198) app_init: Project name:     babymamba_esp32_native
+I (203) app_init: App version:      1
+I (207) app_init: Compile time:     May 10 2026 18:58:28
+I (212) app_init: ELF file SHA256:  ebf9691ac...
+I (216) app_init: ESP-IDF:          v5.4.4
+I (220) efuse_init: Min chip rev:     v0.0
+I (224) efuse_init: Max chip rev:     v3.99
+I (228) efuse_init: Chip rev:         v3.1
+I (232) heap_init: Initializing. RAM available for dynamic allocation:
+I (238) heap_init: At 3FFAE6E0 len 00001920 (6 KiB): DRAM
+I (243) heap_init: At 3FFB82F0 len 00027D10 (159 KiB): DRAM
+I (248) heap_init: At 3FFE0440 len 00003AE0 (14 KiB): D/IRAM
+I (253) heap_init: At 3FFE4350 len 0001BCB0 (111 KiB): D/IRAM
+I (259) heap_init: At 4008BF44 len 000140BC (80 KiB): IRAM
+I (265) spi_flash: detected chip: generic
+I (268) spi_flash: flash io: dio
+W (271) spi_flash: Detected size(4096k) larger than the size in the binary image header(2048k). Using the size in the binary image header.
+I (283) main_task: Started on CPU0
+I (285) main_task: Calling app_main()
+I (289) main_task: Returned from app_main()
+I (289) BABYMAMBA_ESP32: Chip model=1 cores=2 revision=301 flash_embedded=no psram=no
+=== BABYMAMBA ESP32 START ===
+variant=crossover_bidir
+dataset=daphnet
+display_name=Daphnet
+seed=84507
+seq_len=64
+in_channels=9
+num_classes=2
+scratch_bytes=20516
+heap_total_before=295712
+heap_free_before=254460
+largest_block_before=118784
+iter_01_latency_us=80128
+iter_02_latency_us=79368
+iter_03_latency_us=79681
+iter_04_latency_us=79368
+iter_05_latency_us=79693
+iter_06_latency_us=79376
+iter_07_latency_us=79696
+iter_08_latency_us=79361
+iter_09_latency_us=79693
+iter_10_latency_us=79366
+avg_latency_ms=79.573006
+parity_vs_pytorch_pct=99.920235
+parity_vs_engine_pct=99.920219
+max_abs_err_vs_pytorch=0.002713
+predicted_class=0
+predicted_label=No Freeze
+expected_label=No Freeze
+heap_total_after=295712
+heap_free_after=254460
+heap_used_after=41252
+largest_block_after=118784
+logit_00=2.629546881
+logit_01=-2.907418489
+=== DONE ===
