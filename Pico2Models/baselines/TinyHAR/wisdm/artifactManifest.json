@@ -1,0 +1,26 @@
+{
+  "model": "TinyHAR",
+  "modelKey": "tinyhar",
+  "dataset": "wisdm",
+  "seed": 29,
+  "parameterCount": 35792,
+  "sizes": {
+    "onnx_bytes": 156530,
+    "tflite_fp32_bytes": 246036,
+    "tflite_int8_bytes": 213464
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 757460,
+    "tflite_int8_tensor_bytes": 190052
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinyhar_quant.tflite",
+    "modelHeader": "tinyhar_model.h",
+    "modelSource": "tinyhar_model.cpp"
+  }
+}

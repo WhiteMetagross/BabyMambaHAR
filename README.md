@@ -48,17 +48,23 @@ The main repository sections are listed below.
 - `embedded/`. Pico 2 and ESP32 runtime scaffolds for the handcrafted inference engine.
 - `docs/`. Architecture figures, deployment workflow notes, and results reports.
 
+The comparison baselines used in the paper are also preserved in this release. Their seed-29 checkpoints are committed under `models/baselines/`, while their validated device bundles and measured hardware summaries are committed under `Pico2Models/baselines/` and `ESP32Models/baselines/`.
+
 ## Edge Deployment Assets:
 
 The repository now includes a complete edge deployment path for the BabyMamba families. The following assets are committed directly.
 
 - Seed-29 CI-BabyMamba-HAR checkpoints for all datasets.
 - Validated crossover bidirectional checkpoints for all datasets used in the device study.
+- Seed-29 baseline checkpoints for `TinyHAR`, `TinierHAR`, and `DeepConvLSTM`.
 - Device-ready header exports in `Pico2Models/` and `ESP32Models/`.
 - Measured Raspberry Pi Pico 2 benchmark logs and summary JSON files.
+- Baseline deployment summaries for Raspberry Pi Pico 2 and ESP32-class targets.
 - Runtime scaffolds for Raspberry Pi Pico 2 and ESP32-class Arduino targets.
 
 The Pico 2 study was completed with a handcrafted recurrent engine. Very high parity with the PyTorch reference was retained after the export path was corrected for the channel-independent scan implementation. The resulting on-device measurements are summarized in [`docs/Pico2DeploymentResultsReport.md`](docs/Pico2DeploymentResultsReport.md).
+
+The repository also preserves the paper baseline deployment record. The baseline checkpoint zoo, Pico 2 bundles, ESP32 bundles, and measured hardware summaries are consolidated in [`docs/BaselineDeploymentResultsReport.md`](docs/BaselineDeploymentResultsReport.md).
 
 ## Reproducible Workflow:
 
@@ -69,7 +75,7 @@ The repository is intended to be used in four stages.
 3. The target runtime is compiled for Pico 2 or ESP32.
 4. The serial benchmark harness is executed to record latency, memory, and parity metrics.
 
-The corresponding command guides are documented in [`Usage.md`](Usage.md), while the deployment pipeline is described in [`docs/EdgeDeployment.md`](docs/EdgeDeployment.md).
+The same staged workflow is supported for the BabyMamba families and for the comparison baselines. The corresponding command guides are documented in [`Usage.md`](Usage.md), while the deployment pipeline is described in [`docs/EdgeDeployment.md`](docs/EdgeDeployment.md).
 
 ## Quick Start:
 
@@ -103,6 +109,7 @@ The main documents are listed below.
 - [`docs/EdgeDeployment.md`](docs/EdgeDeployment.md). End-to-end edge deployment workflow and artifact map.
 - [`docs/Pico2DeploymentResultsReport.md`](docs/Pico2DeploymentResultsReport.md). Detailed Pico 2 deployment analysis.
 - [`docs/ESP32DeploymentResultsReport.md`](docs/ESP32DeploymentResultsReport.md). ESP32 export bundle status and runtime notes.
+- [`docs/BaselineDeploymentResultsReport.md`](docs/BaselineDeploymentResultsReport.md). Baseline checkpoint, Pico 2, and ESP32 deployment summary.
 
 ## Citation:
 

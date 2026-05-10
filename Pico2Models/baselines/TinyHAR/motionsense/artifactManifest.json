@@ -1,0 +1,26 @@
+{
+  "model": "TinyHAR",
+  "modelKey": "tinyhar",
+  "dataset": "motionsense",
+  "seed": 29,
+  "parameterCount": 39248,
+  "sizes": {
+    "onnx_bytes": 170358,
+    "tflite_fp32_bytes": 259860,
+    "tflite_int8_bytes": 216920
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 1170644,
+    "tflite_int8_tensor_bytes": 293348
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinyhar_quant.tflite",
+    "modelHeader": "tinyhar_model.h",
+    "modelSource": "tinyhar_model.cpp"
+  }
+}

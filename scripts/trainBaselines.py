@@ -229,6 +229,15 @@ def generateRandomSeeds(nSeeds: int, masterSeed: int = MASTER_SEED) -> List[int]
     return list(rng.integers(0, 100000, size=nSeeds))
 
 
+def parseSeedList(raw: Optional[str]) -> Optional[List[int]]:
+    if raw is None:
+        return None
+    values = [part.strip() for part in str(raw).split(',') if part.strip()]
+    if not values:
+        return None
+    return [int(value) for value in values]
+
+
 # ============================================================================
 # DATA CLASSES
 # ============================================================================
@@ -265,6 +274,10 @@ class TrainingResult:
     totalEpochs: int
     trainTime: float
     earlyStopped: bool
+    checkpointPath: str = ""
+    modelStatePath: str = ""
+    runConfigPath: str = ""
+    resultPath: str = ""
     confusionMatrix: List[List[int]] = field(default_factory=list)
     epochMetrics: List[Dict] = field(default_factory=list)
 
@@ -423,6 +436,26 @@ def computeConfusionMatrix(preds: torch.Tensor, labels: torch.Tensor, numClasses
     for p, l in zip(preds.cpu().numpy(), labels.cpu().numpy()):
         matrix[l][p] += 1
     return matrix
+
+
+def convertJsonTypes(obj: Any) -> Any:
+    if isinstance(obj, np.floating):
+        return float(obj)
+    if isinstance(obj, np.integer):
+        return int(obj)
+    if isinstance(obj, Path):
+        return str(obj)
+    if isinstance(obj, dict):
+        return {key: convertJsonTypes(value) for key, value in obj.items()}
+    if isinstance(obj, list):
+        return [convertJsonTypes(value) for value in obj]
+    return obj
+
+
+def saveJson(path: Path, payload: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, 'w', encoding='utf-8') as handle:
+        json.dump(convertJsonTypes(payload), handle, indent=2)
 
 
 # ============================================================================
@@ -590,7 +623,8 @@ def trainModel(
     seed: int,
     epochs: int = TRAINING_EPOCHS,
     warmupEpochs: int = WARMUP_EPOCHS,
-    patience: int = EARLY_STOPPING_PATIENCE
+    patience: int = EARLY_STOPPING_PATIENCE,
+    artifactDir: Optional[Path] = None,
 ) -> TrainingResult:
     """Train a single model with full tracking."""
     
@@ -652,6 +686,7 @@ def trainModel(
     epochMetrics = []
     bestAcc, bestF1, bestPrecision, bestRecall = 0.0, 0.0, 0.0, 0.0
     bestPreds, bestLabels = None, None
+    bestModelState = None
     epochsNoImprove = 0
     earlyStopped = False
     
@@ -728,6 +763,7 @@ def trainModel(
             bestRecall = metrics['recall']
             bestPreds = allPreds.clone()
             bestLabels = allLabels.clone()
+            bestModelState = {key: value.detach().cpu().clone() for key, value in model.state_dict().items()}
             epochsNoImprove = 0
         else:
             epochsNoImprove += 1
@@ -760,6 +796,52 @@ def trainModel(
         confusionMatrix=confMatrix,
         epochMetrics=epochMetrics
     )
+
+    if artifactDir is not None:
+        artifactDir.mkdir(parents=True, exist_ok=True)
+        checkpointPath = artifactDir / f"seed{seed}_checkpoint.pt"
+        modelStatePath = artifactDir / f"seed{seed}_model_state.pt"
+        runConfigPath = artifactDir / f"seed{seed}_run_config.json"
+        resultPath = artifactDir / f"seed{seed}_results.json"
+
+        checkpointPayload = {
+            'model_name': modelName,
+            'dataset': dataset,
+            'seed': int(seed),
+            'model_state_dict': bestModelState or model.state_dict(),
+            'training_epochs': int(epochs),
+            'patience': int(patience),
+            'dataset_spec': spec,
+            'hparams': hparams,
+            'profile': profileResult,
+            'best_metrics': {
+                'accuracy': float(bestAcc),
+                'f1': float(bestF1),
+                'precision': float(bestPrecision),
+                'recall': float(bestRecall),
+            },
+        }
+        torch.save(checkpointPayload, checkpointPath)
+        torch.save(bestModelState or model.state_dict(), modelStatePath)
+
+        runConfig = {
+            'model': modelName,
+            'dataset': dataset,
+            'seed': int(seed),
+            'epochs': int(epochs),
+            'warmup_epochs': int(warmupEpochs),
+            'patience': int(patience),
+            'dataset_spec': spec,
+            'hparams': hparams,
+            'profile': profileResult,
+        }
+        saveJson(runConfigPath, runConfig)
+
+        result.checkpointPath = str(checkpointPath)
+        result.modelStatePath = str(modelStatePath)
+        result.runConfigPath = str(runConfigPath)
+        result.resultPath = str(resultPath)
+        saveJson(resultPath, asdict(result))
     
     del model
     torch.cuda.empty_cache()
@@ -773,9 +855,9 @@ def trainModel(
 
 def trainSingleSeed(args: Tuple) -> Optional[TrainingResult]:
     """Worker function for parallel training."""
-    modelName, dataset, seed, epochs, patience = args
+    modelName, dataset, seed, epochs, patience, artifactDir = args
     try:
-        return trainModel(modelName, dataset, seed, epochs, patience=patience)
+        return trainModel(modelName, dataset, seed, epochs, patience=patience, artifactDir=artifactDir)
     except Exception as e:
         print(f"   ❌ Seed {seed} failed: {e}")
         return None
@@ -787,16 +869,20 @@ def trainDatasetMultiSeed(
     nSeeds: int = N_SEEDS,
     epochs: int = TRAINING_EPOCHS,
     nJobs: int = N_PARALLEL_JOBS,
-    patience: int = None  # None means use dataset-specific default
+    patience: int = None,  # None means use dataset-specific default
+    seedList: Optional[List[int]] = None,
+    outputDir: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """Train on dataset with multiple random seeds using parallel workers."""
     
     # Generate random seeds
-    seeds = generateRandomSeeds(nSeeds, MASTER_SEED)
+    seeds = seedList or generateRandomSeeds(nSeeds, MASTER_SEED)
     
     # Use dataset-specific patience if not explicitly provided
     if patience is None:
         patience = DATASET_PATIENCE.get(dataset, EARLY_STOPPING_PATIENCE)
+
+    artifactRoot = outputDir / modelName / dataset if outputDir is not None else None
     
     print(f"\nTraining {modelName.upper()} on {dataset.upper()} ({nSeeds} seeds)")
     print(f"   Seeds (RNG generated): {seeds}")
@@ -812,7 +898,7 @@ def trainDatasetMultiSeed(
             print(f"\n   Seed {seed} ({i}/{nSeeds})...")
             
             try:
-                result = trainModel(modelName, dataset, seed, epochs, patience=patience)
+                result = trainModel(modelName, dataset, seed, epochs, patience=patience, artifactDir=artifactRoot)
                 results.append(result)
                 
                 print(f"   Acc: {result.bestAccuracy:.2f}%, F1: {result.bestF1:.2f}%, "
@@ -825,7 +911,7 @@ def trainDatasetMultiSeed(
     else:
         # Parallel training for CPU
         print(f"\n   Running {nSeeds} seeds in parallel...")
-        args = [(modelName, dataset, seed, epochs, patience) for seed in seeds]
+        args = [(modelName, dataset, seed, epochs, patience, artifactRoot) for seed in seeds]
         
         with concurrent.futures.ProcessPoolExecutor(max_workers=nJobs) as executor:
             futures = list(executor.map(trainSingleSeed, args))
@@ -860,6 +946,9 @@ def trainDatasetMultiSeed(
         'throughput': results[0].throughput,
         'results': [asdict(r) for r in results]
     }
+
+    if artifactRoot is not None:
+        saveJson(artifactRoot / 'summary.json', summary)
     
     print(f"\n   {modelName.upper()} on {dataset.upper()} Summary:")
     print(f"      Accuracy:   {summary['meanAccuracy']:.2f}% ± {summary['stdAccuracy']:.2f}%")
@@ -876,36 +965,36 @@ def trainAllDatasets(
     modelName: str,
     nSeeds: int = N_SEEDS,
     epochs: int = TRAINING_EPOCHS,
-    nJobs: int = N_PARALLEL_JOBS
+    nJobs: int = N_PARALLEL_JOBS,
+    patience: int = EARLY_STOPPING_PATIENCE,
+    seedList: Optional[List[int]] = None,
+    outputDir: Optional[Path] = None,
 ) -> Dict[str, Any]:
     """Train on all datasets."""
     
     allResults = {}
     
     for dataset in DATASET_SPECS.keys():
-        summary = trainDatasetMultiSeed(modelName, dataset, nSeeds, epochs, nJobs)
+        summary = trainDatasetMultiSeed(
+            modelName,
+            dataset,
+            nSeeds,
+            epochs,
+            nJobs,
+            patience=patience,
+            seedList=seedList,
+            outputDir=outputDir,
+        )
         allResults[dataset] = summary
     
     # Save
-    resultsDir = Path("results/training")
+    resultsDir = outputDir or Path("results/training")
     resultsDir.mkdir(parents=True, exist_ok=True)
     
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     outPath = resultsDir / f"{modelName}_all_{timestamp}.json"
     
-    def convertTypes(obj):
-        if isinstance(obj, np.floating):
-            return float(obj)
-        elif isinstance(obj, np.integer):
-            return int(obj)
-        elif isinstance(obj, dict):
-            return {k: convertTypes(v) for k, v in obj.items()}
-        elif isinstance(obj, list):
-            return [convertTypes(v) for v in obj]
-        return obj
-    
-    with open(outPath, 'w') as f:
-        json.dump(convertTypes(allResults), f, indent=2)
+    saveJson(outPath, allResults)
     
     print(f"\nResults saved: {outPath}")
     
@@ -934,6 +1023,10 @@ def main():
                         help=f'Early stopping patience (default: {EARLY_STOPPING_PATIENCE})')
     parser.add_argument('--n-jobs', '-j', type=int, default=N_PARALLEL_JOBS,
                         help=f'Parallel workers (default: {N_PARALLEL_JOBS}, use 1 for GPU)')
+    parser.add_argument('--seed-list', type=str, default=None,
+                        help='Explicit comma-separated seed list. Overrides --seeds when provided')
+    parser.add_argument('--outDir', type=str, default='results/training/baselines',
+                        help='Output directory for saved baseline artifacts')
     
     args = parser.parse_args()
     
@@ -941,20 +1034,35 @@ def main():
     nJobs = 1 if DEVICE.type == 'cuda' else args.n_jobs
     if nJobs != args.n_jobs:
         print(f"GPU detected: Forcing sequential training (n_jobs=1)")
+
+    explicitSeedList = parseSeedList(args.seed_list)
+    outputDir = Path(args.outDir)
     
     models = ['tinierhar', 'tinyhar', 'lightdeepconvlstm', 'deepconvlstm'] if args.model == 'all' else [args.model]
     
     for model in models:
         if args.dataset == 'all':
-            trainAllDatasets(model, args.seeds, args.epochs, nJobs)
+            trainAllDatasets(
+                model,
+                args.seeds,
+                args.epochs,
+                nJobs,
+                patience=args.patience,
+                seedList=explicitSeedList,
+                outputDir=outputDir,
+            )
         else:
-            summary = trainDatasetMultiSeed(model, args.dataset, args.seeds, args.epochs, nJobs)
-            
-            resultsDir = Path("results/training")
-            resultsDir.mkdir(parents=True, exist_ok=True)
-            outPath = resultsDir / f"{model}_{args.dataset}.json"
-            with open(outPath, 'w') as f:
-                json.dump(summary, f, indent=2, default=float)
+            summary = trainDatasetMultiSeed(
+                model,
+                args.dataset,
+                args.seeds,
+                args.epochs,
+                nJobs,
+                patience=args.patience,
+                seedList=explicitSeedList,
+                outputDir=outputDir,
+            )
+            outPath = outputDir / model / args.dataset / 'summary.json'
             print(f"\nResults saved: {outPath}")
 
 

@@ -1,0 +1,26 @@
+{
+  "model": "TinierHAR",
+  "modelKey": "tinierhar",
+  "dataset": "opportunity",
+  "seed": 29,
+  "parameterCount": 124418,
+  "sizes": {
+    "onnx_bytes": 507880,
+    "tflite_fp32_bytes": 710604,
+    "tflite_int8_bytes": 431696
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 4611904,
+    "tflite_int8_tensor_bytes": 1157658
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinierhar_quant.tflite",
+    "modelHeader": "tinierhar_model.h",
+    "modelSource": "tinierhar_model.cpp"
+  }
+}

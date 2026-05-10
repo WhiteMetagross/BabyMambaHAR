@@ -103,7 +103,7 @@ This package contains the Crossover-BiDir-BabyMamba-HAR model, which is the pred
 
 ### baselines/ -- Baseline Model Implementations.
 
-Re-implementations of comparison models for fair benchmarking. MicroBiConvLSTM is excluded from this repository.
+Re-implementations of the comparison models used for fair BabyMamba-HAR benchmarking.
 
 | File | Description | Key Classes |
 |---|---|---|
@@ -123,6 +123,7 @@ Re-implementations of comparison models for fair benchmarking. MicroBiConvLSTM i
 | `trainBaselines.py` | Training script for all baseline models (DeepConvLSTM, TinierHAR, TinyHAR, LightDeepConvLSTM) with the same training protocol as CI-BabyMamba-HAR for fair comparison. |
 | `hpoBaselines.py` | HPO script for baseline models using the same Optuna protocol. |
 | `runBaselines.py` | Convenience script to run training for all baseline models across all datasets. |
+| `runBaselineRetraining.py` | Sequential seed-29 baseline retraining launcher used for the committed paper-aligned checkpoint sweep. |
 | `runAblations.py` | Runs ablation studies for the legacy BabyMamba architecture variants. |
 | `runCiBabyMambaHarAblations.py` | Runs the CI-BabyMamba-HAR ablation studies (Full, Unidirectional, 2-Layer, No Patching, CNN Only) across specified datasets. |
 | `evaluate.py` | Comprehensive evaluation script. Loads a trained model checkpoint and computes accuracy, F1 score, confusion matrix, parameter count, MACs, and inference latency. |
@@ -157,6 +158,7 @@ Each YAML file contains dataset-specific configuration parameters including inpu
 | `docs/img/ssm_block_detail.png` | Detailed diagram of the Weight-Tied Bidirectional SSM Block internals, including the selective scan mechanism. |
 | `docs/img/babymamba_results_grid.png` | Grid visualization of benchmark results across all datasets and models. |
 | `docs/img/babymamba_ablation_combined.png` | Combined ablation study results visualization. |
+| `docs/BaselineDeploymentResultsReport.md` | Consolidated baseline checkpoint and hardware deployment report for Pico 2 and ESP32. |
 
 ---
 

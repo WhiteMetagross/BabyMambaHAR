@@ -1,0 +1,26 @@
+{
+  "model": "DeepConvLSTM",
+  "modelKey": "deepconvlstm",
+  "dataset": "daphnet",
+  "seed": 29,
+  "parameterCount": 131778,
+  "sizes": {
+    "onnx_bytes": 529427,
+    "tflite_fp32_bytes": 898800,
+    "tflite_int8_bytes": 865304
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 1604416,
+    "tflite_int8_tensor_bytes": 401972
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "deepconvlstm_quant.tflite",
+    "modelHeader": "deepconvlstm_model.h",
+    "modelSource": "deepconvlstm_model.cpp"
+  }
+}

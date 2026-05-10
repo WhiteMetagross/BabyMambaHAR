@@ -35,6 +35,30 @@ The validated checkpoint zoo is already committed under `models/`. This layout a
 
 Each dataset folder contains the deployable checkpoint and its associated run metadata.
 
+The baseline checkpoint zoo is also committed directly.
+
+- `models/baselines/TinyHAR/<dataset>/`.
+- `models/baselines/TinierHAR/<dataset>/`.
+- `models/baselines/DeepConvLSTM/<dataset>/`.
+
+These folders contain the seed-29 checkpoint, model-only weights, run configuration, per-seed results, and dataset summary used in the comparative edge study.
+
+## Training The Baseline Models:
+
+The baseline retraining path follows the same paper-aligned `200` epoch and `patience=10` protocol used for the BabyMamba study. A sequential launcher is included so that the seed-29 sweep can be reproduced without manually chaining commands.
+
+```bash
+python scripts/runBaselineRetraining.py --models all --datasets all --seed-list 29 --epochs 200 --patience 10
+```
+
+If a narrower run is desired, the baseline trainer may be called directly.
+
+```bash
+python scripts/trainBaselines.py --model tinyhar --dataset ucihar --seed-list 29 --epochs 200 --patience 10 --outDir results/training
+```
+
+The saved outputs are written under `results/training/<model>/<dataset>/` and include checkpoint, model-only state, run configuration, per-seed JSON, and summary files.
+
 ## Exporting Pico 2 Model Bundles:
 
 The handheld deployment path is driven by `scripts/exportBabyMambaEdgeModels.py`. A convenience wrapper is also included.
@@ -66,6 +90,15 @@ python scripts/exportBabyMambaEsp32Models.py
 ```
 
 The generated output is written under `ESP32Models/`. The bundles are portable because the handcrafted recurrence engine is not tied to a graph compiler backend.
+
+## Reusing The Committed Baseline Device Bundles:
+
+The preserved baseline edge bundles are already committed for direct inspection.
+
+- `Pico2Models/baselines/`. Baseline TFLite Micro bundles and the preserved Pico 2 benchmark summary.
+- `ESP32Models/baselines/`. Baseline ESP32 bundles and the preserved ESP32 benchmark summary.
+
+These folders are intended to serve as the comparative deployment record that accompanies the BabyMamba study. The consolidated interpretation is documented in `docs/BaselineDeploymentResultsReport.md`.
 
 ## Running The Pico 2 Benchmark Sweep:
 
@@ -105,4 +138,5 @@ Detailed measured tables are provided in `docs/Pico2DeploymentResultsReport.md`.
 
 - The export tools rely on repository-local datasets when a fresh export is generated from checkpoints.
 - The committed `Pico2Models/` and `ESP32Models/` folders already contain validated generated bundles for direct inspection.
+- The committed baseline bundles were preserved under the corresponding `baselines/` subdirectories to keep the comparison study self-contained.
 - The training programs remain compatible with both fused `mamba-ssm` kernels and the pure PyTorch fallback scan path.

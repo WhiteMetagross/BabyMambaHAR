@@ -1,0 +1,26 @@
+{
+  "model": "DeepConvLSTM",
+  "modelKey": "deepconvlstm",
+  "dataset": "wisdm",
+  "seed": 29,
+  "parameterCount": 130118,
+  "sizes": {
+    "onnx_bytes": 522801,
+    "tflite_fp32_bytes": 1266104,
+    "tflite_int8_bytes": 1960088
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 2677616,
+    "tflite_int8_tensor_bytes": 670284
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "deepconvlstm_quant.tflite",
+    "modelHeader": "deepconvlstm_model.h",
+    "modelSource": "deepconvlstm_model.cpp"
+  }
+}

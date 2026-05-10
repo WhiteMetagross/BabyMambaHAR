@@ -67,6 +67,12 @@ This repository snapshot already contains the main artifacts needed for inspecti
 - `ESP32Models/` contains the committed embedded weight headers for ESP32-class deployments.
 - `embedded/` contains the runtime scaffolds that consume the generated `babyMambaWeights.h` files.
 
+The comparison baselines are preserved inside the same layout.
+
+- `models/baselines/` contains the seed-29 baseline checkpoint zoo.
+- `Pico2Models/baselines/` contains the baseline Pico 2 bundles and summary files.
+- `ESP32Models/baselines/` contains the baseline ESP32 bundles and summary files.
+
 Because these artifacts are versioned, the repository may be used directly for deployment study and code review, even when the original training host is unavailable.
 
 ## Optional GPU Acceleration:

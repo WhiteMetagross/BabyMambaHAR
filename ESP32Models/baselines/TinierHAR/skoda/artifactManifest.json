@@ -1,0 +1,26 @@
+{
+  "model": "TinierHAR",
+  "modelKey": "tinierhar",
+  "dataset": "skoda",
+  "seed": 29,
+  "parameterCount": 49352,
+  "sizes": {
+    "onnx_bytes": 207610,
+    "tflite_fp32_bytes": 359464,
+    "tflite_int8_bytes": 280128
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 1432256,
+    "tflite_int8_tensor_bytes": 361740
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinierhar_quant.tflite",
+    "modelHeader": "tinierhar_model.h",
+    "modelSource": "tinierhar_model.cpp"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "model": "TinyHAR",
+  "modelKey": "tinyhar",
+  "dataset": "opportunity",
+  "seed": 29,
+  "parameterCount": 123295,
+  "sizes": {
+    "onnx_bytes": 506546,
+    "tflite_fp32_bytes": 596048,
+    "tflite_int8_bytes": 300944
+  },
+  "ramEstimates": {
+    "tflite_fp32_tensor_bytes": 12644876,
+    "tflite_int8_tensor_bytes": 3161903
+  },
+  "parity": {
+    "pytorchVsOnnx": null,
+    "pytorchVsTfliteFp32": null,
+    "pytorchVsTfliteInt8": null
+  },
+  "files": {
+    "quantTflite": "tinyhar_quant.tflite",
+    "modelHeader": "tinyhar_model.h",
+    "modelSource": "tinyhar_model.cpp"
+  }
+}
