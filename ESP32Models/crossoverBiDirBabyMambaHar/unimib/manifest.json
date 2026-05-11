@@ -1,8 +1,8 @@
 {
-  "variant": "crossoverBiDirBabyMambaHar",
+  "variant": "crossover_bidir",
   "dataset": "unimib",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\unimib\\best_model_seed10734.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\unimib",
+  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/unimib/20260108_195044/best_model_seed10734.pt",
+  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/unimib/20260108_195044",
   "seed": 10734,
   "sample_index": 0,
   "label": 0,
@@ -10,7 +10,7 @@
   "engine_top1": 0,
   "parity_percent": 99.99996152284893,
   "config": {
-    "variant": "crossoverBiDirBabyMambaHar",
+    "variant": "crossover_bidir",
     "scan_impl": "sequential_recurrence",
     "seq_len": 128,
     "in_channels": 3,

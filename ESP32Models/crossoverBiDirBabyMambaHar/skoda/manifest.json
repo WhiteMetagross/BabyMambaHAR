@@ -1,8 +1,8 @@
 {
-  "variant": "crossoverBiDirBabyMambaHar",
+  "variant": "crossover_bidir",
   "dataset": "skoda",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\skoda\\best_model_seed84507.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\crossoverBiDirBabyMambaHar\\skoda",
+  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/skoda/20260108_191733/best_model_seed84507.pt",
+  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/skoda/20260108_191733",
   "seed": 84507,
   "sample_index": 0,
   "label": 6,
@@ -10,7 +10,7 @@
   "engine_top1": 3,
   "parity_percent": 99.99995558317494,
   "config": {
-    "variant": "crossoverBiDirBabyMambaHar",
+    "variant": "crossover_bidir",
     "scan_impl": "sequential_recurrence",
     "seq_len": 98,
     "in_channels": 30,

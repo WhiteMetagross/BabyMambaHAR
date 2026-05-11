@@ -1,8 +1,8 @@
 {
-  "variant": "ciBabyMambaHar",
+  "variant": "ci_babymamba",
   "dataset": "ucihar",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\ucihar\\best_model_seed29.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\ucihar",
+  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/ucihar/20260510_043535/best_model_seed29.pt",
+  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/ucihar/20260510_043535",
   "seed": 29,
   "sample_index": 0,
   "label": 4,
@@ -10,7 +10,7 @@
   "engine_top1": 4,
   "parity_percent": 99.9614326574374,
   "config": {
-    "variant": "ciBabyMambaHar",
+    "variant": "ci_babymamba",
     "scan_impl": "fallback_chunked",
     "seq_len": 128,
     "in_channels": 9,
