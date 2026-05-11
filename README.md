@@ -69,6 +69,8 @@ It should be noted that the Pico 2 BabyMamba path does not rely on a separate `F
 
 The repository also preserves the paper baseline deployment record. The baseline checkpoint zoo, Pico 2 bundles, ESP32 bundles, and measured hardware summaries are consolidated in [`docs/BaselineDeploymentResultsReport.md`](docs/BaselineDeploymentResultsReport.md).
 
+The baseline comparison artifacts were also refreshed after the quantized deployment path was repaired for the activation-dominated collapse cases. The updated bundle set preserves the promoted mixed quantized exports, where `int16` activations and `int8` weights were selected when they produced materially higher parity than the earlier full `int8` path.
+
 The native ESP32 study is now documented directly in [`docs/ESP32DeploymentResultsReport.md`](docs/ESP32DeploymentResultsReport.md). In that study, `CrossoverBiDirBabyMambaHar` completed all eight datasets with an average latency of `154.442 ms`, while `CiBabyMambaHar` completed all eight datasets with an average latency of `2768.142 ms`. These runs were carried out with handcrafted recurrent C++ inference, dual-core execution for the channel-independent path, and row-wise `INT8` projection storage with `float32` recurrent state.
 
 ## Reproducible Workflow:
