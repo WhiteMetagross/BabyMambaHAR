@@ -76,6 +76,8 @@ The repository also contains the committed baseline deployment bundles and sanit
 
 This separation was kept deliberately. The BabyMamba families rely on the handcrafted recurrent export path, whereas the preserved classical baselines are carried as comparison artifacts and should be read as supporting evidence in the broader edge study.
 
+The preserved baseline bundles were refreshed after the activation-quantization collapse cases were re-exported with a repaired mixed quantized path. For the affected `TinyHAR` and `TinierHAR` bundles, `int16` activations with `int8` weights were promoted when they produced substantially higher parity than the earlier full `int8` exports. The updated manifests therefore distinguish between the legacy full-`int8` sidecars and the promoted canonical quantized bundle used in the refreshed deployment summaries.
+
 ## Reproducibility Notes:
 
 The committed model and export folders were included so that the edge study remains inspectable and reusable. The following principles were followed.

@@ -7,20 +7,56 @@
   "sizes": {
     "onnx_bytes": 77398,
     "tflite_fp32_bytes": 178384,
-    "tflite_int8_bytes": 173616
+    "tflite_int8_bytes": 180048,
+    "tflite_int8_full_bytes": 173616,
+    "tflite_int16act_bytes": 180048
   },
   "ramEstimates": {
     "tflite_fp32_tensor_bytes": 349608,
-    "tflite_int8_tensor_bytes": 90027
+    "tflite_int8_tensor_bytes": 167985,
+    "tflite_int8_full_tensor_bytes": 90027,
+    "tflite_int16act_tensor_bytes": 167985
   },
   "parity": {
-    "pytorchVsOnnx": null,
-    "pytorchVsTfliteFp32": null,
-    "pytorchVsTfliteInt8": null
+    "pytorchVsTfliteInt8": {
+      "label": "PyTorch vs TFLite INT16Act-INT8W",
+      "top1_match": true,
+      "top1_ref": 0,
+      "top1_test": 0,
+      "max_abs_error": 1.1133112907409668,
+      "mean_abs_error": 0.6372864246368408,
+      "rmse": 0.7954455625968141,
+      "cosine_similarity": 0.9850002009008763,
+      "parity_percent": 64.08939793453486
+    },
+    "pytorchVsTfliteInt8Full": {
+      "label": "PyTorch vs TFLite INT8",
+      "top1_match": true,
+      "top1_ref": 0,
+      "top1_test": 0,
+      "max_abs_error": 7.286925792694092,
+      "mean_abs_error": 4.90615177154541,
+      "rmse": 5.453293587338484,
+      "cosine_similarity": 0.29604039806286087,
+      "parity_percent": 0.0
+    },
+    "pytorchVsTfliteInt16Act": {
+      "label": "PyTorch vs TFLite INT16Act-INT8W",
+      "top1_match": true,
+      "top1_ref": 0,
+      "top1_test": 0,
+      "max_abs_error": 1.1133112907409668,
+      "mean_abs_error": 0.6372864246368408,
+      "rmse": 0.7954455625968141,
+      "cosine_similarity": 0.9850002009008763,
+      "parity_percent": 64.08939793453486
+    }
   },
   "files": {
     "quantTflite": "tinierhar_quant.tflite",
     "modelHeader": "tinierhar_model.h",
     "modelSource": "tinierhar_model.cpp"
-  }
+  },
+  "quantizationRecipe": "int16_activations_int8_weights",
+  "promotedMixedQuantized": true
 }
