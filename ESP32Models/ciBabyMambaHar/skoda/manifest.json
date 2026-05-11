@@ -1,8 +1,8 @@
 {
-  "variant": "ciBabyMambaHar",
+  "variant": "ci_babymamba",
   "dataset": "skoda",
-  "checkpoint_path": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\skoda\\best_model_seed29.pt",
-  "run_dir": "C:\\Users\\Xeron\\Desktop\\BabyMamba-HAR\\models\\ciBabyMambaHar\\skoda",
+  "checkpoint_path": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/skoda/20260510_083924/best_model_seed29.pt",
+  "run_dir": "/mnt/c/Users/Xeron/Desktop/MandalTinyDLAlgorithm/SensorNanoMamba/results/training/nanoharmamba/fixed_seed29/skoda/20260510_083924",
   "seed": 29,
   "sample_index": 0,
   "label": 6,
@@ -10,7 +10,7 @@
   "engine_top1": 6,
   "parity_percent": 99.99996454765494,
   "config": {
-    "variant": "ciBabyMambaHar",
+    "variant": "ci_babymamba",
     "scan_impl": "sequential_recurrence",
     "seq_len": 98,
     "in_channels": 30,

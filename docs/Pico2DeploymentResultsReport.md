@@ -11,6 +11,8 @@ This report summarizes the committed Raspberry Pi Pico 2 deployment study for th
 
 The deployment study was executed with dataset-specific exported headers and a fixed serial benchmark harness. For each bundle, ten timed inference iterations were recorded after a warm-up pass. Flash footprint, global RAM usage, scratch memory usage, and parity against the PyTorch reference were preserved.
 
+No graph-compiled `FP32` versus `INT8` split applies to this report. The Pico 2 runtime is a handcrafted recurrent implementation of the BabyMamba selective scan, and the committed exports should therefore be interpreted as native recurrent headers rather than as TFLite-style variants.
+
 ## Executive Summary:
 
 The crossover bidirectional family was found to be substantially faster on the Pico 2 while preserving essentially perfect parity. The channel-independent family also ran successfully across all committed datasets, but much larger latency was observed because the recurrent scan is executed independently across channels and layers.

@@ -56,6 +56,8 @@ The Pico 2 runtime is stored in `embedded/pico2BabyMambaRuntime/`. The recurrent
 
 The most important practical outcome is that both BabyMamba families were demonstrated on the Pico 2 with very high parity. The crossover family was found to be especially attractive for low-latency deployment.
 
+The Pico 2 bundles should be read carefully in methodological terms. They are not a separate `FP32` versus `INT8` graph-compilation study. The exported headers preserve the handcrafted recurrent inference path directly, and the board-level behavior is therefore governed by the emitted selective state space code rather than by a microcontroller graph runtime.
+
 ## ESP32 Runtime:
 
 The native ESP32 runtime is stored in `embedded/esp32BabyMambaNative/`. This path was built with ESP-IDF and was used for the measured classic ESP32 study committed in `ESP32Models/babyMambaEsp32Metrics.json`. The recurrent scan is executed directly in C++, while the projection-heavy matrices are stored with row-wise `INT8` compression and float scales.
