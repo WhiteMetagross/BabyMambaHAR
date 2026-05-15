@@ -31,12 +31,12 @@ flowchart LR
 
 Two model families are preserved in the committed checkpoint zoo.
 
-- `models/ciBabyMambaHar/`. Seed-29 CI-BabyMamba-HAR PyTorch checkpoints for all datasets.
-- `models/crossoverBiDirBabyMambaHar/`. Validated crossover bidirectional PyTorch checkpoints used in the deployment study.
+- `models/ciBabyMambaHar/`. Seed-29 CI-BabyMamba-HAR retraining outputs for all datasets.
+- `models/crossoverBiDirBabyMambaHar/`. Validated crossover bidirectional checkpoints used in the deployment study.
 
-Each dataset directory contains the deployable PyTorch checkpoint files only. This structure was chosen so that export generation can be repeated without rediscovering the original training workspace, while the training summaries and deployment manifests remain separated into the results and device-bundle folders.
+Each dataset directory contains the deployable checkpoint and its run metadata. This structure was chosen so that export generation can be repeated without rediscovering the original training workspace.
 
-The comparison-model assets are preserved in parallel under `models/baselines/`. Seed-29 PyTorch checkpoints are therefore available for `TinyHAR`, `TinierHAR`, and `DeepConvLSTM` without mixing the checkpoint zoo with the deployment summaries.
+The comparison-model assets are preserved in parallel under `models/baselines/`. Seed-29 checkpoints and deployment summaries are therefore available for `TinyHAR`, `TinierHAR`, and `DeepConvLSTM` without mixing the BabyMamba and baseline studies together.
 
 ## Export Representation:
 
@@ -82,8 +82,7 @@ The preserved baseline bundles were refreshed after the activation-quantization 
 
 The committed model and export folders were included so that the edge study remains inspectable and reusable. The following principles were followed.
 
-- PyTorch checkpoints were preserved in `models/`.
-- Training summaries and deployment manifests were preserved outside the checkpoint zoo.
+- Checkpoints were preserved alongside their run summaries.
 - Generated headers were committed under device-specific folders.
 - Measured Pico 2 results were committed as JSON and Markdown.
 - Measured native ESP32 results were committed as JSON and Markdown.

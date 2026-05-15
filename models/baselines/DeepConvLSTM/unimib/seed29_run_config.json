@@ -1,0 +1,25 @@
+{
+  "model": "deepconvlstm",
+  "dataset": "unimib",
+  "seed": 29,
+  "device": "cuda",
+  "paperProtocol": {
+    "optimizer": "AdamW",
+    "scheduler": "CosineAnnealingLR",
+    "maxEpochs": 200,
+    "patience": 10,
+    "selectionMetric": "macro_f1"
+  },
+  "datasetConfig": {
+    "name": "UniMiB-SHAR",
+    "inputChannels": 3,
+    "seqLen": 128,
+    "numClasses": 9,
+    "batchSize": 64,
+    "lr": 0.0026596401756527285,
+    "weightDecay": 0.0001,
+    "root": "./datasets/UniMiB-SHAR",
+    "dropout": 0.28309093204725017
+  },
+  "hpoSource": "results/hpo/hpo_deepconvlstm_unimib.json"
+}

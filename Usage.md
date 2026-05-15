@@ -33,7 +33,7 @@ The validated checkpoint zoo is already committed under `models/`. This layout a
 - `models/ciBabyMambaHar/<dataset>/`.
 - `models/crossoverBiDirBabyMambaHar/<dataset>/`.
 
-Each dataset folder contains the deployable PyTorch checkpoint files used by the export pipeline.
+Each dataset folder contains the deployable checkpoint and its associated run metadata.
 
 The baseline checkpoint zoo is also committed directly.
 
@@ -41,9 +41,7 @@ The baseline checkpoint zoo is also committed directly.
 - `models/baselines/TinierHAR/<dataset>/`.
 - `models/baselines/DeepConvLSTM/<dataset>/`.
 
-These folders contain the seed-29 PyTorch checkpoint files used in the comparative edge study.
-
-The corresponding run configurations, training summaries, and export metadata are preserved under `results/`, `Pico2Models/`, and `ESP32Models/` rather than inside the checkpoint zoo.
+These folders contain the seed-29 checkpoint, model-only weights, run configuration, per-seed results, and dataset summary used in the comparative edge study.
 
 ## Training The Baseline Models:
 
