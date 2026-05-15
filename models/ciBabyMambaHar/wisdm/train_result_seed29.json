@@ -1,0 +1,73 @@
+{
+  "modelName": "NanoHARMamba",
+  "dataset": "wisdm",
+  "seed": 29,
+  "bestAccuracy": 83.40374231338501,
+  "bestF1": 76.72301620113225,
+  "bestPrecision": 78.12135966825683,
+  "bestRecall": 79.52418000047417,
+  "finalAccuracy": 81.08026385307312,
+  "parameters": 28230,
+  "macs": 3613440,
+  "sizeMb": 0.10807037353515625,
+  "latencyMs": 0.0,
+  "throughput": 0.0,
+  "epochsTrained": 48,
+  "totalEpochs": 200,
+  "trainTime": 774.2759900093079,
+  "earlyStopped": true,
+  "checkpointPath": "results/training/nanoharmamba/fixed_seed29/wisdm/20260510_052233/best_model_seed29.pt",
+  "modelStatePath": "results/training/nanoharmamba/fixed_seed29/wisdm/20260510_052233/model_state_seed29.pt",
+  "runConfigPath": "results/training/nanoharmamba/fixed_seed29/wisdm/20260510_052233/run_config_seed29.json",
+  "resultPath": "results/training/nanoharmamba/fixed_seed29/wisdm/20260510_052233/train_result_seed29.json",
+  "confusionMatrix": [
+    [
+      1241,
+      22,
+      8,
+      160,
+      0,
+      1
+    ],
+    [
+      16,
+      930,
+      30,
+      75,
+      0,
+      0
+    ],
+    [
+      17,
+      38,
+      218,
+      87,
+      0,
+      5
+    ],
+    [
+      4,
+      12,
+      32,
+      202,
+      0,
+      6
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      67,
+      33
+    ],
+    [
+      0,
+      0,
+      0,
+      0,
+      4,
+      106
+    ]
+  ]
+}

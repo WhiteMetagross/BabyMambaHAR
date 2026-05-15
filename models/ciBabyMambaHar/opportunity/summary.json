@@ -1,0 +1,93 @@
+{
+  "dataset": "opportunity",
+  "model": "Nano-CI-Mamba",
+  "architecture": "Nano-CI-Mamba",
+  "nSeeds": 1,
+  "seeds": [
+    29
+  ],
+  "meanAccuracy": 77.93402075767517,
+  "stdAccuracy": 0.0,
+  "meanF1": 79.81776556657705,
+  "stdF1": 0.0,
+  "parameters": 28205,
+  "macs": 3610240,
+  "sizeMb": 0.10797500610351562,
+  "latencyMs": 0.0,
+  "architectureConfig": {
+    "dModel": 24,
+    "dState": 16,
+    "nLayers": 4,
+    "expand": 2,
+    "dtRank": 2,
+    "dConv": 4,
+    "bidirectional": true,
+    "weightTied": true,
+    "useGatedAttention": true,
+    "channelIndependent": true
+  },
+  "runTag": "fixed_seed29",
+  "seqLen": 128,
+  "results": [
+    {
+      "modelName": "NanoHARMamba",
+      "dataset": "opportunity",
+      "seed": 29,
+      "bestAccuracy": 77.93402075767517,
+      "bestF1": 79.81776556657705,
+      "bestPrecision": 78.53110426463518,
+      "bestRecall": 81.66907923887416,
+      "finalAccuracy": 77.06868648529053,
+      "parameters": 28205,
+      "macs": 3610240,
+      "sizeMb": 0.10797500610351562,
+      "latencyMs": 0.0,
+      "throughput": 0.0,
+      "epochsTrained": 60,
+      "totalEpochs": 200,
+      "trainTime": 2239.9188396930695,
+      "earlyStopped": true,
+      "checkpointPath": "results/training/nanoharmamba/fixed_seed29/opportunity/20260510_080037/best_model_seed29.pt",
+      "modelStatePath": "results/training/nanoharmamba/fixed_seed29/opportunity/20260510_080037/model_state_seed29.pt",
+      "runConfigPath": "results/training/nanoharmamba/fixed_seed29/opportunity/20260510_080037/run_config_seed29.json",
+      "resultPath": "results/training/nanoharmamba/fixed_seed29/opportunity/20260510_080037/train_result_seed29.json",
+      "confusionMatrix": [
+        [
+          311,
+          29,
+          23,
+          11,
+          1
+        ],
+        [
+          73,
+          370,
+          82,
+          28,
+          10
+        ],
+        [
+          42,
+          57,
+          340,
+          3,
+          0
+        ],
+        [
+          3,
+          28,
+          3,
+          337,
+          10
+        ],
+        [
+          4,
+          0,
+          0,
+          1,
+          83
+        ]
+      ]
+    }
+  ]
+}

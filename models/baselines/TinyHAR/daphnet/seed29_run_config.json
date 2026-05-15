@@ -1,0 +1,25 @@
+{
+  "model": "tinyhar",
+  "dataset": "daphnet",
+  "seed": 29,
+  "device": "cuda",
+  "paperProtocol": {
+    "optimizer": "AdamW",
+    "scheduler": "CosineAnnealingLR",
+    "maxEpochs": 200,
+    "patience": 10,
+    "selectionMetric": "macro_f1"
+  },
+  "datasetConfig": {
+    "name": "Daphnet",
+    "inputChannels": 9,
+    "seqLen": 64,
+    "numClasses": 2,
+    "batchSize": 512,
+    "lr": 0.0005659427155076356,
+    "weightDecay": 0.01,
+    "root": "./datasets/Daphnet",
+    "dropout": 0.16586653622242525
+  },
+  "hpoSource": "results/hpo/hpo_tinyhar_daphnet.json"
+}

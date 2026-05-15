@@ -1,0 +1,36 @@
+{
+  "dataset": "opportunity",
+  "seed": 29,
+  "run_tag": "fixed_seed29",
+  "epochs": 200,
+  "warmup_epochs": 10,
+  "patience": 10,
+  "seq_len": 128,
+  "accumulation_steps": 1,
+  "use_torch_compile": false,
+  "architecture_config": {
+    "dModel": 24,
+    "dState": 16,
+    "nLayers": 4,
+    "expand": 2,
+    "dtRank": 2,
+    "dConv": 4,
+    "bidirectional": true,
+    "weightTied": true,
+    "useGatedAttention": true,
+    "channelIndependent": true
+  },
+  "hparams": {
+    "lr": 0.004746273989678527,
+    "weightDecay": 0.006045176877642773,
+    "dropout": 0.2566187312174003,
+    "batchSize": 64
+  },
+  "dataset_spec": {
+    "name": "Opportunity",
+    "numClasses": 5,
+    "inChannels": 79,
+    "seqLen": 128,
+    "root": "./datasets/Opportunity"
+  }
+}
