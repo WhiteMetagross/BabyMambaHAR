@@ -69,18 +69,18 @@ idf.py --version
 
 This repository snapshot already contains the main artifacts needed for inspection and reuse.
 
-- `models/` contains the committed dataset-specific checkpoints and training summaries.
+- `models/` contains the committed dataset-specific PyTorch checkpoints only.
 - `Pico2Models/` contains the committed embedded weight headers and Pico 2 benchmark JSON files.
 - `ESP32Models/` contains the committed embedded weight headers for ESP32-class deployments.
 - `embedded/` contains the runtime scaffolds that consume the generated `babyMambaWeights.h` files.
 
 The comparison baselines are preserved inside the same layout.
 
-- `models/baselines/` contains the seed-29 baseline checkpoint zoo.
+- `models/baselines/` contains the seed-29 baseline PyTorch checkpoint zoo.
 - `Pico2Models/baselines/` contains the baseline Pico 2 bundles and summary files.
 - `ESP32Models/baselines/` contains the baseline ESP32 bundles and summary files.
 
-Because these artifacts are versioned, the repository may be used directly for deployment study and code review, even when the original training host is unavailable.
+Because these artifacts are versioned, the repository may be used directly for deployment study and code review, even when the original training host is unavailable. Training summaries, export manifests, and device-level measurements are preserved outside the checkpoint zoo so that `models/` remains a PyTorch-only archive.
 
 ## Optional GPU Acceleration:
 
