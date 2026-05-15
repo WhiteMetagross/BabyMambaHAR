@@ -116,7 +116,7 @@ The present repository release should be read as a completed native ESP32 deploy
 
 For users who want to reproduce or extend the study, the recommended path is straightforward.
 
-1. Use the committed model zoo under `models/`.
+1. Use the committed PyTorch checkpoint zoo under `models/`.
 2. Regenerate headers with `scripts/exportBabyMambaEsp32Models.py`.
 3. Build and flash `embedded/esp32BabyMambaNative/`.
 4. Run `scripts/runBabyMambaEsp32Sweep.py` to collect fresh measurements.

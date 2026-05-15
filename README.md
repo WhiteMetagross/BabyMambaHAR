@@ -42,13 +42,13 @@ The main repository sections are listed below.
 - `ciBabyMambaHar/`. Source code for the channel-independent BabyMamba model family.
 - `crossoverBiDirBabyMambaHar/`. Source code for the crossover bidirectional model family.
 - `scripts/`. Training, export, and deployment orchestration utilities.
-- `models/`. Committed trained checkpoints and run summaries.
+- `models/`. Committed PyTorch checkpoints only.
 - `Pico2Models/`. Pico 2 export bundles and measured deployment JSON files.
 - `ESP32Models/`. ESP32 export bundles generated from the same recurrent C representation.
 - `embedded/`. Pico 2 and ESP32 runtime scaffolds for the handcrafted inference engine.
 - `docs/`. Architecture figures, deployment workflow notes, and results reports.
 
-The comparison baselines used in the paper are also preserved in this release. Their seed-29 checkpoints are committed under `models/baselines/`, while their validated device bundles and measured hardware summaries are committed under `Pico2Models/baselines/` and `ESP32Models/baselines/`.
+The comparison baselines used in the paper are also preserved in this release. Their seed-29 PyTorch checkpoints are committed under `models/baselines/`, while their validated device bundles and measured hardware summaries are committed under `Pico2Models/baselines/` and `ESP32Models/baselines/`.
 
 ## Edge Deployment Assets:
 
