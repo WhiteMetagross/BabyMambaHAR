@@ -163,6 +163,8 @@ Each YAML file contains dataset-specific configuration parameters including inpu
 | `docs/img/ssm_block_detail.png` | Detailed diagram of the Weight-Tied Bidirectional SSM Block internals, including the selective scan mechanism. |
 | `docs/img/babymamba_results_grid.png` | Grid visualization of benchmark results across all datasets and models. |
 | `docs/img/babymamba_ablation_combined.png` | Combined ablation study results visualization. |
+| `docs/BabyMambaEdgeDeployment.md` | Canonical BabyMamba edge deployment methodology, including the MambaLite-Micro style export path, mixed-precision projection quantization, and hardware runtime adaptations. |
+| `docs/EdgeDeployment.md` | Compatibility pointer that redirects older documentation references to `docs/BabyMambaEdgeDeployment.md`. |
 | `docs/ESP32DeploymentResultsReport.md` | Native ESP32 deployment report for both BabyMamba families, including the `INT8` projection optimization path. |
 | `docs/BaselineDeploymentResultsReport.md` | Consolidated baseline checkpoint and hardware deployment report for Pico 2 and ESP32. |
 

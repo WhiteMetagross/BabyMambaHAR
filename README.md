@@ -82,7 +82,7 @@ The repository is intended to be used in four stages.
 3. The target runtime is compiled for Pico 2 or ESP32.
 4. The serial benchmark harness is executed to record latency, memory, and parity metrics.
 
-The same staged workflow is supported for the BabyMamba families and for the comparison baselines. The corresponding command guides are documented in [`Usage.md`](Usage.md), while the deployment pipeline is described in [`docs/EdgeDeployment.md`](docs/EdgeDeployment.md).
+The same staged workflow is supported for the BabyMamba families and for the comparison baselines. The corresponding command guides are documented in [`Usage.md`](Usage.md), while the deployment pipeline is described in [`docs/BabyMambaEdgeDeployment.md`](docs/BabyMambaEdgeDeployment.md).
 
 ## Quick Start:
 
@@ -118,7 +118,8 @@ The main documents are listed below.
 
 - [`InstallationAndSetup.md`](InstallationAndSetup.md). Environment preparation and dependency notes.
 - [`Usage.md`](Usage.md). Training, export, and deployment commands.
-- [`docs/EdgeDeployment.md`](docs/EdgeDeployment.md). End-to-end edge deployment workflow and artifact map.
+- [`docs/BabyMambaEdgeDeployment.md`](docs/BabyMambaEdgeDeployment.md). Detailed BabyMamba edge deployment methodology, quantization path, and artifact map.
+- [`docs/EdgeDeployment.md`](docs/EdgeDeployment.md). Compatibility pointer to the canonical BabyMamba edge deployment document.
 - [`docs/Pico2DeploymentResultsReport.md`](docs/Pico2DeploymentResultsReport.md). Detailed Pico 2 deployment analysis.
 - [`docs/ESP32DeploymentResultsReport.md`](docs/ESP32DeploymentResultsReport.md). ESP32 export bundle status and runtime notes.
 - [`docs/BaselineDeploymentResultsReport.md`](docs/BaselineDeploymentResultsReport.md). Baseline checkpoint, Pico 2, and ESP32 deployment summary.
